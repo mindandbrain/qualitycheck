@@ -10,4 +10,4 @@ deploy:
   file: dist/index.html
   skip_cleanup: true
   on:
-    repo: mindandbrain/qualitycheck
+    tags: true
