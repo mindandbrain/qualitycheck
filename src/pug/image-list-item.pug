@@ -1,0 +1,15 @@
+.item
+  header
+    .subject ${subject}
+    if task
+      .task ${task}
+    if run
+      .run ${run}
+    if sources
+      .sources.expandable ${sources}
+  img(src=fname)
+  footer
+    .green
+    .yellow
+    .red
+    .reset

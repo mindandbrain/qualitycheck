@@ -1,0 +1,30 @@
+{
+  "name": "qualitycheck",
+  "fullName": "mindandbrain/qualitycheck",
+  "version": "0.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "test": "rollup -c"
+  },
+  "author": "Lea Waller",
+  "license": "",
+  "browserslist": [
+    "last 1 Chrome versions",
+    "last 1 Firefox versions",
+    "last 1 Safari versions"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.6.0",
+    "bootstrap-scss": "^4.3.1",
+    "node-sass": "^4.12.0",
+    "pug": "^2.0.3",
+    "rollup": "^1.20.2",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-postcss": "^2.0.3",
+    "rollup-plugin-pug": "^1.1.1",
+    "rollup-plugin-terser": "^5.1.1"
+  }
+}
