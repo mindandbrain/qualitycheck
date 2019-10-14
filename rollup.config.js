@@ -1,25 +1,70 @@
 /*
 */
 
-import pug from "rollup-plugin-pug";
+import nodeResolve from "rollup-plugin-node-resolve";
+import typescript from "rollup-plugin-typescript2"
 import babel from "rollup-plugin-babel";
 import postcss from "rollup-plugin-postcss";
+import postcssNormalize from "postcss-normalize";
 import { terser } from "rollup-plugin-terser";
 import { makeBundle } from "./make-bundle-plugin.js";
 
-import { fullName, version } from './package.json';
+import { fullName, version } from "./package.json";
 const isProduction = process.env.NODE_ENV === "production";
 
 export default (async () => ({
-  input: "src/js/index.js",
+  input: "src/ts/index.ts",
   output: {
     name: "qualitycheck",
-    file: "index.js",
+    file: "generated/index.js",
     format: "iife"
   },
   plugins: [
-    pug({
-      compileDebug: !isProduction
+    nodeResolve({}),
+    typescript({
+      typescript: require("typescript"),
+      clean: true,
+      verbosity: 3,
+      exclude: []
+    }),
+    postcss({
+      modules: false,
+      use: ["sass"],
+      minimize: isProduction,
+      extract: true,
+      plugins: [
+        postcssNormalize({
+          
+        })
+      ]
+    }),
+    terser({
+      output: {
+        beautify: !isProduction,
+        comments: "some",
+        semicolons: false,
+        ecma: 8        
+      },
+      ecma: 8,
+      compress: {
+        passes: 5,
+        keep_fargs: false,
+        toplevel: true,
+        top_retain: [ "qualitycheck" ],
+        unsafe: true,
+        warnings: true
+      },
+      mangle: isProduction ? {
+        module: true,
+        eval: true,
+        reserved: [ "qualitycheck" ],
+        properties: {
+          undeclared: true,
+          debug: !isProduction,
+          reserved: [ "id", "fname", "sources",
+            "it", "sub", "task", "run" ]
+        } 
+      } : false
     }),
     babel({
       exclude: "node_modules/**",
@@ -31,27 +76,10 @@ export default (async () => ({
         "@babel/plugin-proposal-class-properties"
       ]
     }),
-    postcss({
-      modules: true,
-      use: ["sass"],
-      minimize: isProduction,
-      extract: true
-    }),
-    isProduction && terser({
-      output: {
-        comments: "some",
-        semicolons: false,
-        ecma: 8        
-      },
-      ecma: 8,
-      compress: {
-        passes: 5
-      }
-    }),
     makeBundle({
       pageTitle: `${fullName} ${version}`,
       template: "src/pug/index.pug",
-      outputPath: "dist/index.html"
+      outputPath: "generated/index.html"
     })
   ]
 }))();

@@ -1,3 +1,31 @@
-header
-  .pageTitle ${pageTitle}
-  
+nav.menu-bar
+  .title
+    | mindandbrain/qualitycheck
+    span(ref="versionNumberContainer")
+  .spacer
+  .button-group.ratings
+    header Ratings
+    button(ref="openButton") Open
+    button(ref="saveButton") Save
+    button.warn(ref="resetButton") Reset
+  .spacer
+  .button-group.view
+    header View
+    .segmented-control.sort-by(ref="sortByContainer")
+      header Sort by
+    //- .toggle
+    //-   header Zoom
+    //-   button(ref="zoomOnButton") On
+    //-   button(ref="zoomOffButton") Off
+    //- .toggle
+    //-   header Navigation bars
+    //-   button(ref="verticalButton") Vertical
+    //-   button(ref="horizontalButton") Horizontal
+  .spacer
+  .button-group.search
+    input(type="search" 
+          placeholder="Go to" 
+          spellcheck="false" 
+          autocomplete="false"
+          ref="searchInput") 
+    ul.autocomplete-suggestions(ref="searchAutocompleteSuggestions")

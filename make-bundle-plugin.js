@@ -1,9 +1,8 @@
-//
-
 import { renderFile } from "pug";
 
 import { dirname } from "path";
-import { writeFile, mkdir } from "fs";
+import { writeFileSync, mkdirSync } from "fs";
+import { html as beautifyHtml } from "js-beautify";
 
 export const makeBundle = (options) => {
   return {
@@ -26,21 +25,16 @@ export const makeBundle = (options) => {
         css, js
       });
       
-      mkdir(dirname(options.outputPath), { 
-        recursive: true 
-      }, (error) => {
-        if (error) {
-          console.log(error);
-          throw error;
-        }
+      html = beautifyHtml(html, { 
+        indent_size: 2, 
+        space_in_empty_paren: true 
       });
       
-      writeFile(options.outputPath, html, (error) => {
-        if (error) {
-          console.log(error);
-          throw error;
-        }
+      mkdirSync(dirname(options.outputPath), { 
+        recursive: true 
       });
+      
+      writeFileSync(options.outputPath, html);
     }
   };
 };

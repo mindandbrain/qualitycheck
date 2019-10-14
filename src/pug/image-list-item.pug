@@ -1,15 +1,12 @@
-.item
+.image-list-item
   header
-    .subject ${subject}
-    if task
-      .task ${task}
-    if run
-      .run ${run}
-    if sources
-      .sources.expandable ${sources}
-  img(src=fname)
+    .sub(ref="subLabel")
+    .task(ref="taskLabel")
+    .run(ref="runLabel")
+    .sources.expandable(ref="sourcesLabel")
+  img(ref="image")
   footer
-    .green
-    .yellow
-    .red
-    .reset
+    button.green
+    button.yellow
+    button.red
+    button.clear

@@ -1,0 +1,104 @@
+@import "./colors.scss";
+
+body > nav.menu-bar {
+  width: 100%;
+  height: 40px;
+  background-color: $dark-blue;
+  
+  overflow-x: scroll;
+  overflow-y: visible;
+  
+  font-size: 0.75rem;
+  
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  
+  * {
+    display: flex;
+  }
+  
+  > .spacer {
+    flex-grow: 1; 
+  }
+  
+  > .title {
+    color: white;
+    padding: 0 8px 0 8px;
+  }
+  
+  > .button-group {
+    height: 100%;
+    background-color: lightgreen;
+    
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    
+    padding: 0 8px 0 8px;
+    
+    &.ratings {
+      background-color: $dark-blue-20;
+    }
+    &.view {
+      background-color: $dark-blue-25;
+    }
+    &.search {
+      background-color: $dark-blue-30;
+      
+      > input {
+        font-size: 0.75rem;
+        
+        border: 0;
+        background: transparent;
+      }
+      
+      > input:focus {
+       outline: 0;
+      }
+      
+      > .autocomplete-suggestions {
+        position: absolute;
+      }
+    }
+    
+    > .segmented-control {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      
+      > * {
+        margin: 0 8px 0 0;
+        
+        &:last-child {
+          margin: 0;
+        }
+      }
+      
+      > input {
+        
+        &:first-child {
+          
+        }
+        
+        &:last-child {
+          
+        }
+      }
+    }
+    
+    > header {
+      font-weight: bold;
+    }
+    
+    > * {
+      margin: 0 8px 0 0;
+      
+      &:last-child {
+        margin: 0;
+      }
+    }
+  }
+}
+

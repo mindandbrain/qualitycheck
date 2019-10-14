@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "src/ts/*",
+        "generated/ts/*"
+      ]
+    },
+    "target": "esnext", 
+    "module": "esnext",
+    "downlevelIteration": false,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true
+  }
+}
