@@ -35,11 +35,14 @@ const alphabet = (a: string) => {
 
 const chars = alphabet("az") + alphabet("AZ");
 export const hashToString = (hash: number): string => {
+  var uhash = new Uint32Array(1);
+  uhash[0] = hash;
+  
   var ret = "", base = chars.length;
   do {
-      ret += chars.charAt(hash % base);
-      hash = Math.floor(hash / base);
-  } while (hash > 0);
+      ret += chars.charAt(uhash[0] % base);
+      uhash[0] = Math.floor(uhash[0] / base);
+  } while (uhash[0] > 0);
   return ret;
 }
 

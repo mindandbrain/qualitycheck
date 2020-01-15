@@ -1,109 +1,82 @@
 import { HashBuilder } from "utils";
 
-import { BaseItem, Item } from "./item";
+import { BaseItem, Item } from "model/item";
 
-import { SortKey, ItemOrder,
-  sortKeyToIdMap, idToSortKeyMap
-} from "./order";
+import { ItemOrder } from "model/sort";
 
-type SortKeyCallback = (sk: SortKey) => void;
-// type OrientationCallback = (o: Orientation) => void;
+import { SortKey, tagToSortKeyMap,
+  sortKeyToTagMap, sortKeyToDisplayNameMap 
+} from "model/sort-key";
+
+import { Zoom, tagToZoomMap,
+  zoomToTagMap, zoomToDisplayNameMap 
+} from "model/zoom";
+
+import { Orientation, tagToOrientationMap,
+  orientationToTagMap, orientationToDisplayNameMap 
+} from "model/orientation";
+
+import { EnumProperty } from "model/property";
 
 export class DataStore {
   private items: Item[];
   
   public itemOrder: ItemOrder;
   
-  private itemHashBuilder = new HashBuilder();
   public itemsHash: string;
   
+  public sortKey: EnumProperty<SortKey>;
+  public zoom: EnumProperty<Zoom>;
+  public orientation: EnumProperty<Orientation>;
+    
   constructor(baseItems: BaseItem[]) {    
     this.items = [];
     
     let itemIdSet = new Set<string>();
+    let itemHashBuilder = new HashBuilder();
     for (let i = baseItems.length - 1; i >= 0; i--) { 
-      // go backwards so that newer items overwrite old ones
+      // go backwards so that newly appended items overwrite old ones
       let baseItem = baseItems[i];
       try {
-        if (!itemIdSet.has(baseItem.id)) {
+        if (!itemIdSet.has(baseItem.id)) { // skip existing items
           let item = new Item(baseItem);
           
-          this.itemHashBuilder
+          itemHashBuilder
             .reduceString(item.id)
             .reduceString(item.fname);
             
-          item.index = this.items.push(item) - 1;
+          item.index = this.items.push(item) - 1; // save item
           
-          itemIdSet.add(baseItem.id);
+          itemIdSet.add(item.id);
         }
       } catch {} // invalid item 
     }
-    
-    this.itemsHash = this.itemHashBuilder.stringHash;
-    console.log(this.itemsHash);
-    
-    this.sortKey = SortKey.ImageType;
+    this.itemsHash = itemHashBuilder.stringHash;
     
     this.itemOrder = new ItemOrder(this.items);
-    console.log(this.itemOrder);
+    
+    this.sortKey = new EnumProperty<SortKey>(
+      `${this.itemsHash}_sortKey`,
+      SortKey.ImageType,
+      tagToSortKeyMap,
+      sortKeyToTagMap,
+      sortKeyToDisplayNameMap
+    );
+    this.zoom = new EnumProperty<Zoom>(
+      `${this.itemsHash}_zoom`,
+      Zoom.On,
+      tagToZoomMap,
+      zoomToTagMap,
+      zoomToDisplayNameMap
+    );
+    this.orientation = new EnumProperty<Orientation>(
+      `${this.itemsHash}_orientation`,
+      Orientation.Horizontal,
+      tagToOrientationMap,
+      orientationToTagMap,
+      orientationToDisplayNameMap
+    );
     
   }
-  
-  private sortKey: SortKey;
-  private sortKeyCallbacks: SortKeyCallback[] = [];
-  public getSortKey(): SortKey {
-    return this.sortKey;
-  }
-  public setSortKey(sk: SortKey) {
-    console.log(`setSortKey ${sk}`);
-    this.sortKey = sk;
-    for (let callback of this.sortKeyCallbacks) {
-      callback(sk);
-    }
-  }
-  public listenSortKey(callback: SortKeyCallback) {
-    this.sortKeyCallbacks.unshift(callback);
-  }
-  
-  public getSortKeyId(): string {
-    return sortKeyToIdMap[this.sortKey];
-  }
-  public setSortKeyId(id: string) {
-    this.setSortKey(idToSortKeyMap[id]);
-  }
-  public listenSortKeyId(callback: (value: string) => void) {
-    this.listenSortKey((sk: SortKey) => {
-      callback(sortKeyToIdMap[sk]);
-    });
-  }
-  
-  // private orientation: Orientation;
-  // private orientationCallbacks: OrientationCallback[] = [];
-  // public getOrientation(): Orientation {
-  //   return this.orientation;
-  // }
-  // public setOrientation(o: Orientation) {
-  //   console.log(`setOrientation ${o}`);
-  //   this.orientation = sk;
-  //   for (let callback of this.sortKeyCallbacks) {
-  //     callback(sk);
-  //   }
-  // }
-  // public listenSortKey(callback: SortKeyCallback) {
-  //   this.sortKeyCallbacks.unshift(callback);
-  // }
-  // 
-  // public getSortKeyId(): string {
-  //   return sortKeyToIdMap[this.sortKey];
-  // }
-  // public setSortKeyId(id: string) {
-  //   this.setSortKey(idToSortKeyMap[id]);
-  // }
-  // public listenSortKeyId(callback: (value: string) => void) {
-  //   this.listenSortKey((sk: SortKey) => {
-  //     callback(sortKeyToIdMap[sk]);
-  //   });
-  // }
-  
   
 }

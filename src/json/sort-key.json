@@ -1,0 +1,10 @@
+[
+  {
+    "tag": "subject",
+    "displayName": "Subject"
+  },
+  {
+    "tag": "image-type",
+    "displayName": "Image type"
+  }
+]

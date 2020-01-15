@@ -1,0 +1,10 @@
+[
+  {
+    "tag": "on",
+    "displayName": "On"
+  },
+  {
+    "tag": "off",
+    "displayName": "Off"
+  }
+]

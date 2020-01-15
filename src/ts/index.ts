@@ -9,6 +9,17 @@ function handleError(errorText: string) {
   document.body.appendChild(errorElement);
 }
 
+export default function qualitycheck(items: BaseItem[]): void {
+  // called by qualitycheck.js with data
+  try {
+    const dataStore = new DataStore(items);
+    new ContentView(dataStore);
+  } catch (error) {
+    handleError(`Error 
+${error}`);
+  }
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   var script = document.createElement("script");
   script.src = "qualitycheck.js";
@@ -21,16 +32,6 @@ ${JSON.stringify(error)}`);
   document.body.appendChild(script);
 });
 
-export default function qualitycheck(items: BaseItem[]): void {
-  try {
-    const dataStore = new DataStore(items);
-    new ContentView(dataStore);
-  } catch (error) {
-    handleError(`Error 
-${JSON.stringify(error)}`);
-  }
-};
-
-//
+// 
 
 import "../scss/main.scss";

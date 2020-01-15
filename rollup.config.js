@@ -25,7 +25,8 @@ export default (async () => ({
       typescript: require("typescript"),
       clean: true,
       verbosity: 3,
-      exclude: []
+      exclude: [],
+      declarationDir: "generated/"
     }),
     postcss({
       modules: false,

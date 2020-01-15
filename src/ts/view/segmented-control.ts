@@ -3,6 +3,8 @@ import { ViewBase, Orientation } from "view/base";
 
 import { HashBuilder } from "utils";
 
+import { EnumProperty } from "model/property";
+
 export class Option {
   public id: string;
   public displayName: string;
@@ -14,78 +16,65 @@ export class Option {
 }
 
 export class SegmentedControlView extends ViewBase {
-  public options: Option[];
+  public property: EnumProperty<unknown>;
   
   public htmlElementMap: { [key: string]: HTMLElement } = {};
   
   private isDirty: boolean = false;
     
-  constructor(parent: HTMLElement, options: Option[],
-      getValue: () => string, 
-      setValue: (string) => void, 
-      listenValue: (Function) => void
-    ) {
+  constructor(parent: HTMLElement, property: EnumProperty<unknown>) {
     super(parent);
     
-    this.options = options;
+    this.property = property;
+    
+    let values = property.possibleValues();
     
     const hashBuilder = new HashBuilder();
-    for (let option of options) {
+    for (let value of values) {
       hashBuilder
-        .reduceString(option.id)
-        .reduceString(option.displayName);
+        .reduceString(value.id)
+        .reduceString(value.displayString);
     }
-    const name = hashBuilder.stringHash;
+      console.log(hashBuilder);
+    const name = hashBuilder.stringHash;    
     
-    const value = getValue();
+    const id = property.getString();
     
-    
-    for (let option of this.options) {
+    for (let value of values) {
       
       const inputElement = h("input", [
         new Attribute("type", "radio"),
         new Attribute("name", name),
-        new Attribute("id", option.id)
+        new Attribute("id", value.id)
       ], []);
       
-      if (value === option.id) {
+      if (id === value.id) {
         inputElement.setAttribute("checked", "");
       }
       
       const eventListener = (event) => {
         this.isDirty = true;
-        setValue(event.target.id);
+        property.setString(event.target.id);
         this.isDirty = false;
       };
       inputElement.addEventListener("change", 
         eventListener.bind(this));
       
-      this.htmlElementMap[option.id] = inputElement;
+      this.htmlElementMap[value.id] = inputElement;
     }
     
     const appendChildren = () => {
-      for (let option of options) {
-        parent.appendChild(this.htmlElementMap[option.id]);
+      for (let value of values) {
+        parent.appendChild(this.htmlElementMap[value.id]);
         parent.appendChild(h("label", [
-          new Attribute("for", option.id)
+          new Attribute("for", value.id)
         ], [
-          t(option.displayName)
+          t(value.displayString)
         ]));
       }
     };
     
     this.queue.push(appendChildren);
-  }
-  
-  public updateValue(newValue: string) {
-    if (!this.isDirty) {
-      for (let option of this.options) {
-        const id = option.id;
-        if (id === newValue) {
-          this.htmlElementMap[id].setAttribute("checked", "");
-        }
-      }
-    }
   }
   
   public loop() {

@@ -8,20 +8,14 @@ nav.menu-bar
     button(ref="openButton") Open
     button(ref="saveButton") Save
     button.warn(ref="resetButton") Reset
-  .spacer
   .button-group.view
     header View
     .segmented-control.sort-by(ref="sortByContainer")
       header Sort by
-    //- .toggle
-    //-   header Zoom
-    //-   button(ref="zoomOnButton") On
-    //-   button(ref="zoomOffButton") Off
-    //- .toggle
-    //-   header Navigation bars
-    //-   button(ref="verticalButton") Vertical
-    //-   button(ref="horizontalButton") Horizontal
-  .spacer
+    .segmented-control.zoom(ref="toggleZoomContainer")
+      header Zoom
+    .segmented-control.orientation(ref="orientationContainer")
+      header Orientation
   .button-group.search
     input(type="search" 
           placeholder="Go to" 

@@ -1,36 +1,36 @@
 import { ViewBase } from "view/base";
 import MenuBarTemplate from "view/template/menu-bar";
 
-import { SegmentedControlView, Option } from "view/segmented-control";
+import { SegmentedControlView } from "view/segmented-control";
 
-import { sortKeyToIdMap, 
-  sortKeyToDisplayNameMap } from "model/order";
 import { DataStore } from "model/data-store";
 
 export class MenuBarView extends MenuBarTemplate {
   public sortBySegmentedControl: SegmentedControlView;
+  public zoomSegmentedControl: SegmentedControlView;
+  public orientationSegmentedControl: SegmentedControlView;
   
   private children: ViewBase[] = [];
   
   constructor(parent: HTMLElement, dataStore: DataStore) {
     super(parent);
     
-    let options: Option[] = [];
-    for (let key in sortKeyToIdMap) {
-      options.push(new Option(
-        sortKeyToIdMap[key],
-        sortKeyToDisplayNameMap[key]
-      ));
-    }
-    
     this.sortBySegmentedControl = new SegmentedControlView(
       this.sortByContainer,
-      options,
-      dataStore.getSortKeyId.bind(dataStore),
-      dataStore.setSortKeyId.bind(dataStore),
-      dataStore.listenSortKeyId.bind(dataStore)
+      dataStore.sortKey
     );
+    this.zoomSegmentedControl = new SegmentedControlView(
+      this.toggleZoomContainer,
+      dataStore.zoom
+    );
+    this.orientationSegmentedControl = new SegmentedControlView(
+      this.orientationContainer,
+      dataStore.orientation
+    );
+    
     this.children.unshift(this.sortBySegmentedControl);
+    this.children.unshift(this.zoomSegmentedControl);
+    this.children.unshift(this.orientationSegmentedControl);
   }
   
   loop() {

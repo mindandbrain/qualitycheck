@@ -1,0 +1,10 @@
+[
+  {
+    "tag": "horizontal",
+    "displayName": "Horizontal"
+  },
+  {
+    "tag": "vertical",
+    "displayName": "Vertical"
+  }
+]

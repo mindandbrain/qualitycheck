@@ -6,7 +6,7 @@ export class BaseItem {
   public fname: string;
   public sources: string[];
   
-  constructor(id: string, fname: string, sources: string[]) {
+  constructor(id: string, fname: string, sources: string[]) { // validate fields
     if (!id) {
       throw new Error("BaseItem missing 'id'");
     }
@@ -37,7 +37,7 @@ export class Item extends BaseItem {
   public it: ImageType;
   
   constructor(base: BaseItem) {
-    super(base.id, base.fname, base.sources);
+    super(base.id, base.fname, base.sources); // validate
         
     const parts: string[] = this.id.split(".");
     

@@ -17,7 +17,6 @@ export const compare = (a: any, b: any): number => {
   }
 };
 
-
 export interface Comparator<T> {
     (a: T, b: T): number;
 }

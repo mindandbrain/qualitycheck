@@ -9,6 +9,7 @@
     },
     "target": "esnext", 
     "module": "esnext",
+    "declaration": false,
     "downlevelIteration": false,
     "strictNullChecks": true,
     "strictPropertyInitialization": true
