@@ -1,9 +1,9 @@
 import { Attribute, h, t } from "view/render";
-import { ViewBase, Orientation } from "view/base";
+import { ViewBase } from "view/base";
 
 import { HashBuilder } from "utils";
 
-import { EnumProperty } from "model/property";
+import { EnumProperty } from "model/enum";
 
 export class Option {
   public id: string;
@@ -16,13 +16,11 @@ export class Option {
 }
 
 export class SegmentedControlView extends ViewBase {
-  public property: EnumProperty<unknown>;
+  public property: EnumProperty<number>;
   
   public htmlElementMap: { [key: string]: HTMLElement } = {};
-  
-  private isDirty: boolean = false;
-    
-  constructor(parent: HTMLElement, property: EnumProperty<unknown>) {
+
+  constructor(parent: HTMLElement, property: EnumProperty<number>) {
     super(parent);
     
     this.property = property;
@@ -30,13 +28,13 @@ export class SegmentedControlView extends ViewBase {
     let values = property.possibleValues();
     
     const hashBuilder = new HashBuilder();
+    hashBuilder.reduceString(property.propertyName); 
     for (let value of values) {
       hashBuilder
         .reduceString(value.id)
         .reduceString(value.displayString);
     }
-      console.log(hashBuilder);
-    const name = hashBuilder.stringHash;    
+    const propertyHash = hashBuilder.stringHash;
     
     const id = property.getString();
     
@@ -44,18 +42,18 @@ export class SegmentedControlView extends ViewBase {
       
       const inputElement = h("input", [
         new Attribute("type", "radio"),
-        new Attribute("name", name),
-        new Attribute("id", value.id)
+        new Attribute("name", propertyHash),
+        new Attribute("id", `${propertyHash}_${value.id}`) // id to assign label, use prefix to avoid conflicts
       ], []);
       
       if (id === value.id) {
         inputElement.setAttribute("checked", "");
       }
       
-      const eventListener = (event) => {
-        this.isDirty = true;
-        property.setString(event.target.id);
-        this.isDirty = false;
+      const eventListener = () => {
+        property.setString(
+          value.id 
+        );
       };
       inputElement.addEventListener("change", 
         eventListener.bind(this));
@@ -67,7 +65,7 @@ export class SegmentedControlView extends ViewBase {
       for (let value of values) {
         parent.appendChild(this.htmlElementMap[value.id]);
         parent.appendChild(h("label", [
-          new Attribute("for", value.id)
+          new Attribute("for", `${propertyHash}_${value.id}`) // assign label to radio input
         ], [
           t(value.displayString)
         ]));

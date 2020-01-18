@@ -9,10 +9,10 @@ function handleError(errorText: string) {
   document.body.appendChild(errorElement);
 }
 
-export default function qualitycheck(items: BaseItem[]): void {
+export default function qualitycheck(id: string, items: BaseItem[]): void {
   // called by qualitycheck.js with data
   try {
-    const dataStore = new DataStore(items);
+    const dataStore = new DataStore(id, items);
     new ContentView(dataStore);
   } catch (error) {
     handleError(`Error 

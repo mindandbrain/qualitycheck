@@ -33,14 +33,14 @@ const alphabet = (a: string) => {
   return String.fromCharCode(...c);
 }
 
-const chars = alphabet("az") + alphabet("AZ");
+export const hashChars = alphabet("az") + alphabet("AZ");
 export const hashToString = (hash: number): string => {
   var uhash = new Uint32Array(1);
   uhash[0] = hash;
   
-  var ret = "", base = chars.length;
+  var ret = "", base = hashChars.length;
   do {
-      ret += chars.charAt(uhash[0] % base);
+      ret += hashChars.charAt(uhash[0] % base);
       uhash[0] = Math.floor(uhash[0] / base);
   } while (uhash[0] > 0);
   return ret;

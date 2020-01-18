@@ -1,4 +1,4 @@
-import { BaseItem, Item } from "model/item";
+import { Item } from "model/item";
 
 import { Comparator, 
         makePropertiesComparator, 
@@ -6,47 +6,6 @@ import { Comparator,
 
 import { SortKey, SortKeyMap, 
          sortKeyToDisplayNameMap } from "model/sort-key";
-
-// export enum SortKey {
-//  Subject = "subject",
-//  ImageType = "image-type"
-// }
-// 
-// type SortKeyMap<T> = {
-//   [P in SortKey]: T;
-// };
-// type InverseSortKeyMap = {
-//   [key: string]: SortKey;
-// };
-// 
-// function k(s: string) { // make id
-//   return s.replace(/\s/g, "-").toLowerCase();
-// }
-// 
-// const a = "Subject";
-// const b = "Image type";
-// const c = k(a);
-// const d = k(b);
-// 
-// export const sortKeyToTagMap: SortKeyMap<string> = {
-//   [SortKey.Subject]: c,
-//   [SortKey.ImageType]: d
-// };
-// 
-// export const tagToSortKeyMap: InverseSortKeyMap = {
-//   [c]: SortKey.Subject,
-//   [d]: SortKey.ImageType
-// };
-// 
-// export const sortKeyToDisplayNameMap: SortKeyMap<string> = {
-//   [SortKey.Subject]: a,
-//   [SortKey.ImageType]: b
-// };
-// 
-// export const displayNameToSortKeyMap: InverseSortKeyMap = {
-//   [a]: SortKey.Subject,
-//   [b]: SortKey.ImageType
-// };
 
 type ItemKey = keyof Item;
 const sortKeyToItemKeysMap: SortKeyMap<ItemKey[]> = { // sort priorities

@@ -12,7 +12,7 @@ export class ViewBase {
   
   public queue: Function[] = [];
   
-  constructor(parent) {
+  constructor(parent: HTMLElement) {
     this.parent = parent;
   }
   

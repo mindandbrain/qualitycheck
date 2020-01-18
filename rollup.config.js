@@ -61,9 +61,10 @@ export default (async () => ({
         reserved: [ "qualitycheck" ],
         properties: {
           undeclared: true,
+          keep_quoted: true,
           debug: !isProduction,
           reserved: [ "id", "fname", "sources",
-            "it", "sub", "task", "run" ]
+            "it", "sub", "task", "run", "on", "off" ]
         } 
       } : false
     }),

@@ -1,9 +1,13 @@
-import { Attribute, h, t } from "view/render";
-
 import { ViewBase, Orientation } from "view/base";
 
 export class Container extends ViewBase {
   public container: HTMLElement;
+  
+  constructor(parent: HTMLElement) {
+    super(parent);
+    
+    this.container = parent;
+  }
   
   public loop() {
     super.loop();
@@ -14,20 +18,23 @@ const marginPercent: string = "-50%";
 const zeroPixels: string = "0px";
 const threshold = [0.0];
 
-export class SentinelObserving extends Container {
+export abstract class SentinelObservingContainer extends Container {
   public orientation: Orientation;
 
   private frontWasIntersecting = false;
   private backWasIntersecting = false;
 
-  private frontIntersectionObserver;
-  private backIntersectionObserver;
+  private frontIntersectionObserver: IntersectionObserver;
+  private backIntersectionObserver: IntersectionObserver;
+  
+  private toDoAddElementFront = false;
+  private toDoAddElementBack = false;
 
-  constructor(parent, orientation) {
+  constructor(parent: HTMLElement, orientation: Orientation) {
     super(parent);
     this.orientation = orientation;
 
-    let rootMarginFront, rootMarginBack;
+    let rootMarginFront: string, rootMarginBack: string;
     switch (this.orientation) {
       case Orientation.Horizontal:
         rootMarginFront = `${zeroPixels} ${marginPercent} ${zeroPixels} ${zeroPixels}`;
@@ -41,7 +48,8 @@ export class SentinelObserving extends Container {
         throw new Error(`Invalid orientation "#{orientation}".`)
     }
 
-    const frontIntersectionObserverCallback = (changes, observer) => {
+    const frontIntersectionObserverCallback = 
+    (changes: any, observer: IntersectionObserver) => {
       for (const change of changes) {
         if (change.isIntersecting) {
           this.frontWasIntersecting = true;
@@ -50,15 +58,8 @@ export class SentinelObserving extends Container {
         }
       }
     };
-
-    this.frontIntersectionObserver = new IntersectionObserver(
-      frontIntersectionObserverCallback.bind(this), {
-      root: this.targetDOMElement,
-      rootMargin: rootMarginFront,
-      threshold
-    });
-
-    const backIntersectionObserverCallback = (changes, observer) => {
+    const backIntersectionObserverCallback = 
+    (changes: any, observer: IntersectionObserver) => {
       for (const change of changes) {
         if (change.isIntersecting) {
           this.backWasIntersecting = true;
@@ -67,33 +68,26 @@ export class SentinelObserving extends Container {
         }
       }
     };
+    
 
     this.frontIntersectionObserver = new IntersectionObserver(
       frontIntersectionObserverCallback.bind(this), {
-      root: this.targetDOMElement,
+      root: this.container,
+      rootMargin: rootMarginFront,
+      threshold
+    });
+    this.backIntersectionObserver = new IntersectionObserver(
+      backIntersectionObserverCallback.bind(this), {
+      root: this.container,
       rootMargin: rootMarginFront,
       threshold
     });
 
-    this.backIntersectionObserver = new IntersectionObserver((changes, observer) => {
-      for (const change of changes) {
-        if (change.isIntersecting) {
-          this.backWasIntersecting = true;
-          observer.disconnect();
-          return;
-        }
-      }
-    }, {
-      root: this.targetDOMElement,
-      rootMargin: rootMarginBack,
-      threshold
-    });
-
-    observeSentinelElements();
+    this.observeSentinelElements();
   }
 
-  observeSentinelElements() {
-    const frontSentinelItem = this.targetDOMElement.querySelector(".item:first-of-type");
+  private observeSentinelElements(): void {
+    const frontSentinelItem = <HTMLElement>this.container.firstChild;
     if (frontSentinelItem) {
       this.frontIntersectionObserver.disconnect();
       this.frontIntersectionObserver.observe(frontSentinelItem);
@@ -102,35 +96,29 @@ export class SentinelObserving extends Container {
       return;
     }
 
-    const backSentinelItem = this.targetDOMElement.querySelector(".item:last-of-type");
+    const backSentinelItem = <HTMLElement>this.container.lastChild;
     if (backSentinelItem) {
       this.backIntersectionObserver.disconnect();
       this.backIntersectionObserver.observe(backSentinelItem);
     }
   }
 
-  onAnimationFrame() {
-    let isDirty = false;
-    if (this.#toDoAddElementFront) {
+  public loop(): void {
+    super.loop();
+    
+    if (this.toDoAddElementFront) {
       this.addElementFront();
-      this.#toDoAddElementFront = false;
-      isDirty = true;
+      this.toDoAddElementFront = false;
+      this.observeSentinelElements();
     }
-    if (this.#toDoAddElementBack) {
+    if (this.toDoAddElementBack) {
       this.addElementBack();
-      this.#toDoAddElementBack = false;
-      isDirty = true;
-    }
-    if (isDirty) {
-      observeSentinelElements();
+      this.toDoAddElementBack = false;
+      this.observeSentinelElements();
     }
   }
 
-  addElementFront() {
-    throw new Error("Abstract function SentinelObservingItemContainer.addElementFront needs to be implemented.");
-  }
-  addElementBack() {
-    throw new Error("Abstract function SentinelObservingItemContainer.addElementBack needs to be implemented.");
-  }
+  public abstract addElementFront(): void;
+  public abstract addElementBack(): void;
 
 }
