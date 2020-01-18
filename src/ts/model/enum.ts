@@ -1,6 +1,3 @@
-import { TypedCallback, 
-         StringCallback } from "model/callback";
-
 import { Property } from "model/property";
 
 export class EnumDisplayValue {

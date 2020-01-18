@@ -8,6 +8,8 @@ export const parseHTML = (html) => {
 
 */
 
+export const utf8Decoder = new TextDecoder("utf8");
+
 export const reduceHashFromString = (s: string, hash: number): number => {
   for (var i = 0; i < s.length; i++) {
       var char = s.charCodeAt(i);

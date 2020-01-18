@@ -1,64 +1,46 @@
-import { Item } from "model/item";
+import { FloatProperty, 
+         ItemProperty,
+         AbstractProperty } from "model/property";
+import { TypedCallback } from "model/callback";
 import { DataStore } from "model/data-store";
-import { Property } from "model/property";
-         
-const utf8Decoder = new TextDecoder("utf8");
-
-export class FloatProperty extends Property<number> {
-  protected validateString(v: string): boolean {
-    try {
-      this.fromString(v);
-      return true;
-    } catch {}
-    return false;
-  }
-  protected fromString(v: string): number {
-    let buffer: ArrayBuffer = new ArrayBuffer(8);
-    let u8View: Uint8Array = new Uint8Array(buffer);
-    let f64View: Float64Array = new Float64Array(buffer);
-    
-    const bytes = window.atob(v); // base64 decode
-    for (let i = 0; i < u8View.length; i++) {
-      u8View[i] = bytes.charCodeAt(i); 
-    }
-    
-    return f64View[0];
-  }
-  protected toString(v: number):string {
-    let buffer: ArrayBuffer = new ArrayBuffer(8);
-    let u8View: Uint8Array = new Uint8Array(buffer);
-    let f64View: Float64Array = new Float64Array(buffer);
-    
-    f64View[0] = v;
-    const bt = utf8Decoder.decode(u8View);
-    const st = window.btoa(bt); // base64 encode
-    return st;
+                  
+export class ScrollPosition {
+  public itemId: string;
+  public subItemPosition: number;
+  
+  constructor(itemId: string, subItemPosition: number) {
+    this.itemId = itemId;
+    this.subItemPosition = subItemPosition;
   }
 }
 
-export class ItemProperty extends Property<Item> {
-  private dataStore: DataStore;
+export class ScrollPositionProperty extends AbstractProperty<ScrollPosition> {
+  private itemProperty: ItemProperty;
+  private subItemPositionProperty: FloatProperty;
+  
+  private callbacks: TypedCallback<ScrollPosition>[] = [];
   
   constructor(propertyName: string, dataStore: DataStore) {
     super(propertyName);
     
-    this.dataStore = dataStore;
+    this.itemProperty = new ItemProperty(`${propertyName}_item`, dataStore);
+    this.subItemPositionProperty = new FloatProperty(`${propertyName}_subItem`);
   }
   
-  protected validateString(v: string): boolean {
-    return this.dataStore.hasItemById(v); 
-  }  
-  protected toString(v: Item): string {
-    return v.id;
+  public get(): ScrollPosition {
+    return new ScrollPosition(
+      this.itemProperty.getString(),
+      this.subItemPositionProperty.get()
+    );
   }
-  protected fromString(v: string): Item {
-    return this.dataStore.getItemById(v);
+  public set(v: ScrollPosition): void {
+    this.itemProperty.setString(v.itemId);
+    this.subItemPositionProperty.set(v.subItemPosition);
+    for (let callback of this.callbacks) {
+      callback(v);
+    } 
   }
-}
-
-
-export class ScrollPositionProperty {
-  
-  
-  
+  public listen(cb: TypedCallback<ScrollPosition>): void {
+    this.callbacks.unshift(cb);
+  }
 }

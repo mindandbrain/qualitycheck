@@ -16,6 +16,8 @@ import { Orientation, tagToOrientationMap,
 
 import { EnumProperty } from "model/enum";
 
+import { ScrollPositionProperty } from "model/scroll";
+
 export class DataStore {
   public id: string;
   
@@ -27,6 +29,7 @@ export class DataStore {
   public sortKey: EnumProperty<SortKey>;
   public zoom: EnumProperty<Zoom>;
   public orientation: EnumProperty<Orientation>;
+  public scrollPosition: ScrollPositionProperty;
     
   constructor(id: string, baseItems: BaseItem[]) {    
     this.id = id;
@@ -70,6 +73,10 @@ export class DataStore {
       tagToOrientationMap,
       orientationToTagMap,
       orientationToDisplayNameMap
+    );
+    this.scrollPosition = new ScrollPositionProperty(
+      `${this.id}_scrollPosition`,
+      this
     );
   }
   
