@@ -7,11 +7,14 @@
         "generated/ts/*"
       ]
     },
-    "target": "esnext", 
-    "module": "esnext",
+    "types": [],
+    "target": "ESNext", 
+    "module": "commonjs",
     "declaration": false,
     "downlevelIteration": false,
     "strictNullChecks": true,
-    "strictPropertyInitialization": true
+    "strictPropertyInitialization": true,
+    "useDefineForClassFields": false,
+    "experimentalDecorators": true
   }
 }

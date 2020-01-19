@@ -1,6 +1,12 @@
 import { ImageType, 
   tagToImageTypeMap, imageTypeToTagMap, imageTypeToDisplayNameMap } from "model/image-type";
 
+export declare interface BaseItem {
+  id: string;
+  fname: string;
+  sources: string[];
+}
+
 export class BaseItem {
   public id: string;
   public fname: string;

@@ -1,3 +1,5 @@
+import { Attribute, h, t } from "view/render";
+
 import { ViewBase, Orientation } from "view/base";
 
 export class Container extends ViewBase {
@@ -6,11 +8,12 @@ export class Container extends ViewBase {
   constructor(parent: HTMLElement) {
     super(parent);
     
-    this.container = parent;
-  }
-  
-  public loop() {
-    super.loop();
+    this.container = h("div", [], []);
+    
+    const appendChildren = () => {
+      parent.appendChild(this.container);
+    };
+    this.queue.push(appendChildren);
   }
 }
 
@@ -45,7 +48,7 @@ export abstract class SentinelObservingContainer extends Container {
         rootMarginBack  = `${marginPercent} ${zeroPixels} ${zeroPixels} ${zeroPixels}`;
         break;
       default:
-        throw new Error(`Invalid orientation "#{orientation}".`)
+        throw new Error(`Invalid orientation "${orientation}".`)
     }
 
     const frontIntersectionObserverCallback = 

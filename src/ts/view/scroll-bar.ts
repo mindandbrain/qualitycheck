@@ -13,15 +13,12 @@ export class MultiScrollBarView extends Container {
   
   constructor(parent: HTMLElement, dataStore: DataStore) {
     super(parent);
-    
-    this.container = h("div", [], []);
-    
     this.subjectScrollBarView = new ScrollBarView(this.container);
     this.imageTypeScrollBarView = new ScrollBarView(this.container);
     this.taskScrollBarView = new ScrollBarView(this.container);
     
     const appendChildren = () => {
-      parent.appendChild(this.container);
+      // parent.appendChild(this.container);
       
       let v: SortKey = dataStore.sortKey.get();
       // if (v === SortKey.Subject) {
@@ -33,7 +30,6 @@ export class MultiScrollBarView extends Container {
       // }
       // this.container.appendChild(this.taskScrollBarView);
     };
-
     this.queue.push(appendChildren);
     
     dataStore.sortKey.listen(this.onSortKeyChange.bind(this));
