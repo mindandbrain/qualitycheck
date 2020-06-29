@@ -11,18 +11,25 @@ const fname = "icon";
 
 const requireIconSvg = (iconId) => {
   return new Promise((resolve) => {
+    const retrieve = () => {
+      got(
+        `https://fonts.gstatic.com/s/i/materialicons/${iconId}/24px.svg?download=true`
+      ).then((response) => {
+        cacache.put(cachePath, iconId, response.body).then(() => {
+          resolve(response.body);
+        });
+      });
+    };
     cacache
       .get(cachePath, iconId)
-      .catch(() => {
-        got(
-          `https://fonts.gstatic.com/s/i/materialicons/${iconId}/24px.svg?download=true`
-        ).then((response) => {
-          cacache.put(cachePath, iconId, response.body).then(() => {
-            resolve(response.body);
-          });
-        });
-      })
-      .then((cacheEntry) => resolve(String(cacheEntry.data)));
+      .catch(retrieve)
+      .then((cacheEntry) => {
+        if (cacheEntry) {
+          resolve(cacheEntry.data);
+        } else {
+          retrieve();
+        }
+      });
   });
 };
 
