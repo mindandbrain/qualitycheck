@@ -177,6 +177,7 @@ export class Charts extends HTMLElement {
     let valTypeBoxPlots: { [key in ValType]?: HTMLElement } = {};
     for (const valType of valTypes) {
       valTypeBoxPlots[valType] = new BoxPlot(
+        viewModel,
         viewModel.valViewModel.vals[valType],
         5,
         valTypeUnits[valType],

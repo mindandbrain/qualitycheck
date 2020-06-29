@@ -242,7 +242,7 @@ export class Navigator extends HTMLElement {
   }
 
   onLocationChange(loc: Location): void {
-    if (loc.viewType == "explore") {
+    if (loc.viewType == "explore" && loc.hash in this.leafNodesByHash) {
       const item = this.leafNodesByHash[loc.hash];
       this.setActiveItem("right", item);
       this.setActiveItem("left", item.parentNode);

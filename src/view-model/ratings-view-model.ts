@@ -93,6 +93,7 @@ export class Scan implements Tagged {
 
 export class RatingsViewModel {
   scanArray: Array<Scan> = new Array<Scan>();
+  scansByKeyPath: { [key: string]: Scan } = {};
   scanIndicesByRating: IndexSets = new IndexSetsImpl();
 
   imgsArraysByType: { [key in ImgTypeStr]: Array<Img> } = {
@@ -157,6 +158,7 @@ export class RatingsViewModel {
         const index = this.scanArray.length;
         scan = new Scan(index, img);
         this.scanArray.push(scan);
+        this.scansByKeyPath[scanKeyPath] = scan;
         this.scanIndicesByRating["none"].push(i);
         scan.listen((rating: Rating): void => {
           for (const r of ratings) {

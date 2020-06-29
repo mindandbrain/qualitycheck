@@ -6,7 +6,7 @@ export function keyPath(...args: (string | null)[]): string {
   let acc = args.shift();
   for (const tag of args) {
     acc += delimiter;
-    if (tag !== null) {
+    if (tag !== null && tag !== undefined) {
       acc += tag;
     }
   }

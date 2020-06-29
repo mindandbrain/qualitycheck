@@ -194,37 +194,31 @@ a.point.active {
   }
 }
 
-.blue {
-  a.point {
-    background-color: lighten(blue, 20%) !important;
-    border-color: lighten(blue, 10%) !important;
-  }
+.blue a.point,
+a.point.blue {
+  background-color: lighten(blue, 20%) !important;
+  border-color: lighten(blue, 10%) !important;
+}
+.green a.point,
+a.point.green {
+  background-color: lighten(green, 25%) !important;
+  border-color: lighten(green, 10%) !important;
 }
 
-.green {
-  a.point {
-    background-color: lighten(green, 25%) !important;
-    border-color: lighten(green, 10%) !important;
-  }
+.yellow a.point,
+a.point.yellow {
+  background-color: $yellow !important;
+  border-color: darken($yellow, 4%) !important;
 }
 
-.yellow {
-  a.point {
-    background-color: $yellow !important;
-    border-color: darken($yellow, 4%) !important;
-  }
+.red a.point,
+a.point.red {
+  background-color: lighten(red, 25%) !important;
+  border-color: lighten(red, 10%) !important;
 }
 
-.red {
-  a.point {
-    background-color: lighten(red, 25%) !important;
-    border-color: lighten(red, 10%) !important;
-  }
-}
-
-.purple {
-  a.point {
-    background-color: $purple !important;
-    border-color: darken($purple, 4%) !important;
-  }
+.purple a.point,
+a.point.purple {
+  background-color: $purple !important;
+  border-color: darken($purple, 4%) !important;
 }

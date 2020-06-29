@@ -7,6 +7,6 @@ export function isViewType(s: string): s is ViewType {
 
 export const viewTypeDisplayNames: { [key in ViewType]: string } = {
   charts: "Charts",
-  explore: "Explore images",
-  zoom: "Image detail view",
+  explore: "Explore reports",
+  zoom: "Report detail view",
 } as const;

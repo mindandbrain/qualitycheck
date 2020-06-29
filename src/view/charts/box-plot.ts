@@ -1,6 +1,7 @@
 import { format, precisionFixed } from "d3-format";
 
-import { Val, entities } from "../../model";
+import { Val, entities, keyPath, Rating, ratings, ratingColors } from "../../model";
+import { ViewModel } from "../../view-model";
 
 import { Attribute, h, t } from "../render";
 import { PointFactory } from "../point";
@@ -23,18 +24,19 @@ export class BoxPlot extends HTMLElement {
     customElements.define("qc-box-plot", this);
   }
 
-  vals: Array<Val>;
+  vals: Array<Val> = new Array<Val>();
 
   radius: number;
   min: number;
   max: number;
 
-  points: Array<HTMLElement>;
+  points: Array<HTMLElement> = new Array<HTMLElement>();
   container: HTMLElement;
 
   overflowIndicator: HTMLElement;
 
   constructor(
+    viewModel: ViewModel,
     vals: Array<Val>, // assumed to be sorted by val.number
     radius: number,
     unit: string,
@@ -42,10 +44,26 @@ export class BoxPlot extends HTMLElement {
   ) {
     super();
 
-    this.vals = vals;
-
     const factory = new PointFactory(["subject", "task", "session", "run", "direction"]);
-    this.points = this.vals.map((val) => factory.create(val));
+    const scansByKeyPath = viewModel.ratingsViewModel.scansByKeyPath;
+    for (const val of vals) {
+      const valKeyPath = keyPath(val.subject, val.task, val.session, val.run, val.direction);
+
+      if (valKeyPath in scansByKeyPath) {
+        const point = factory.create(val);
+        scansByKeyPath[valKeyPath].listen((rating: Rating) => {
+          for (const r of ratings) {
+            if (r === rating) {
+              point.classList.add(ratingColors[r]);
+            } else {
+              point.classList.remove(ratingColors[r]);
+            }
+          }
+        });
+        this.points.push(point);
+        this.vals.push(val);
+      }
+    }
     const pointsContainer = h("div", [new Attribute("class", "points")], [...this.points]);
 
     // overflow indicator

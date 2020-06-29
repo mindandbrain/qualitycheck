@@ -72,7 +72,7 @@ module.exports = postcss.plugin("postcss-icons", (opts = {}) => (css) => {
       nodepromises.push(
         Promise.all(promises).then(() => {
           node.value = parsedValue.toString();
-          console.log(node);
+          // console.log(node);
         })
       );
     }

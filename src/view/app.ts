@@ -127,6 +127,10 @@ export class App extends HTMLElement {
     }
   };
   onLocationChange = (loc: Location): void => {
+    if (loc.hash && !(loc.hash in this.viewModel.model.imgsByHash)) {
+      this.navigateToFragmentIdentifier(Location.default().toFragmentIdentifier());
+      return;
+    }
     history.replaceState(null, "", loc.toFragmentIdentifier());
     if (loc.viewType !== this.viewType) {
       // remove old
