@@ -2,7 +2,9 @@
 node_modules
 /dist
 /generated
+/public
 .tscc_temp
+.icons
 
 # local env files
 .env.local

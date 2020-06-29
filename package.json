@@ -1,34 +1,55 @@
 {
   "name": "qualitycheck",
   "fullName": "mindandbrain/qualitycheck",
+  "repository": "mindandbrain/qualitycheck",
+  "license": "",
   "version": "0.0.0",
   "description": "",
   "main": "",
   "scripts": {
-    "test": "gulp"
+    "serve": "env NODE_ENV=development webpack-dev-server",
+    "build": "env NODE_ENV=production webpack",
+    "test": "env NODE_ENV=production webpack"
   },
   "author": "Lea Waller",
-  "license": "",
   "browserslist": [
     "last 1 Chrome versions",
     "last 1 Firefox versions",
     "last 1 Safari versions"
   ],
+  "sideEffects": [
+    "./src/model/model.ts"
+  ],
   "dependencies": {
-    "camelcase": "^5.3.1",
-    "caniuse-lite": "^1.0.30001021",
+    "@types/d3-format": "^1.3.1",
+    "@types/pluralize": "0.0.29",
+    "@types/resize-observer-browser": "^0.1.3",
+    "browserslist": "^4.12.0",
+    "cacache": "^15.0.4",
+    "clean-webpack-plugin": "^3.0.0",
+    "collections": "^5.1.11",
     "cssnano": "^4.1.10",
-    "google-closure-compiler": "^20200112.0.0",
-    "gulp": "^4.0.2",
-    "htmlparser2": "^4.0.0",
-    "js-beautify": "^1.10.3",
-    "node-sass": "^4.13.1",
-    "plugin-error": "^1.0.1",
-    "postcss": "^7.0.26",
-    "postcss-normalize": "^8.0.1",
-    "pug": "^2.0.3",
-    "through2": "^3.0.1",
-    "tsickle": "^0.38.0",
-    "typescript": "^3.7.5"
+    "d3-format": "^1.4.4",
+    "glob": "^7.1.6",
+    "got": "^11.3.0",
+    "html-webpack-plugin": "^4.2.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "node-sass": "^4.14.1",
+    "npm": "^6.14.5",
+    "pluralize": "^8.0.0",
+    "postcss-inline-svg": "^4.1.0",
+    "postcss-loader": "^3.0.0",
+    "postcss-normalize": "^9.0.0",
+    "postcss-value-parser": "^4.1.0",
+    "raw-loader": "^4.0.1",
+    "sass-loader": "^8.0.2",
+    "ts-loader": "^7.0.5",
+    "typescript": "^3.9.5",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.7.2"
+  },
+  "devDependencies": {
+    "prettier": "^2.0.5"
   }
 }

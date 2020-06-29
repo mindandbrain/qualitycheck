@@ -1,20 +1,13 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "*": [
-        "src/ts/*",
-        "generated/ts/*"
-      ]
-    },
-    "types": [],
-    "target": "ESNext", 
-    "module": "commonjs",
-    "declaration": false,
-    "downlevelIteration": false,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    "useDefineForClassFields": false,
-    "experimentalDecorators": true
-  }
+    "sourceMap": true,
+    "target": "ESNext",
+    "module": "ES6",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "types": ["resize-observer-browser"]
+  },
+  "exclude": ["node_modules", "**/*.scss"],
+  "include": ["**/*.ts", "**/*.d.ts"]
 }

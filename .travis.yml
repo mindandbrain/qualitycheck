@@ -1,13 +1,13 @@
 language: node_js
 node_js:
-- 12
+  - 12
 env:
-- NODE_ENV=production
+  - NODE_ENV=production
 deploy:
   provider: releases
   api_key:
     secure: IIjvM3MYIUlOJ5RkGFpLszwkmScYhM6B/LQVKZAzghG532mwsZK5kdJG0zcQqQaaCpAnGit0Qbj2lXssBLt2l3k3FqvIwQM5fxdsP007zo9jgSpbVz1jv+uv8j8kNM5K+PtjyuGL8ZOqd3gYDbo1WZVIjPeot25IYcvBJEyB2kyMKNlRpgXUNYCxDklWCsUC89Sz7ZfQH9BnMaV8+bv6KNcZS5tQ6KLNPumMjYNp2fAoKnuH8HgYFS8RsDGY6U8lg/j6TMctGgEbsBuL5bsDuTEkkHI9GwhRKvwkHgBu/lQnSS8LskabUjlef8qb1+1EfSqRdn35e+yoYAqCFg4iN0xLOdLpHhqeP/YCizkRsv1Hm4TDTyxcTeO8y9PY1q1naPrNOPQDkEjF09wlcWl5kkR2tIx6DtPZwlVZor34fTYIIPzUEyt3GNC6kkhXX1DzuSsuB8mDCHN3vYIt3BUI+yMHfEEstgb3RWgYCduruX8xaYbwZZSsUWi032KrpOU52gfRDMdgEMiCM/9eif2ebP+OZOfqX3G58t3n0EUx0U8Oa3GBekBbUwU8zQjit1/4S9yepmQa1hDeqwrdYP3yvuaSy9Ci0YKAC7ubmbGDnUQnAmvav0q4I0Dj+Ih4Jw4C9vK1P0KXoGumZzhwfxkawRxDqkvivEkoooDIHG612Bs=
-  file: generated/index.html
+  file: dist/index.html
   skip_cleanup: true
   on:
     tags: true

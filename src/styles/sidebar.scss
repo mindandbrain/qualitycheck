@@ -1,0 +1,156 @@
+@import "./variables";
+
+qc-sidebar {
+  position: relative;
+  height: 100%;
+  width: 48px;
+  min-width: 48px;
+
+  user-select: none;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 6px 0 6px 0;
+
+  background-color: $pane-background-color;
+  border-right: 3px solid $pane-border-color;
+
+  z-index: 1000;
+
+  > ul {
+    display: flex;
+    flex-direction: column;
+
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    > li {
+      display: flex;
+      position: relative;
+      align-self: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 3px;
+      margin: 6px 0 6px 0;
+      background-color: darken($pane-background-color, 10%);
+
+      &::after {
+        content: "";
+        mask-size: 85% 85%;
+        mask-repeat: no-repeat;
+        mask-position: center;
+        background-color: $icon-color;
+        width: 100%;
+        height: 100%;
+      }
+
+      &:hover,
+      &.active {
+        cursor: pointer;
+        background-color: $icon-color;
+        box-shadow: 0px 0 3px rgba(0, 0, 0, 0.1);
+        &::after {
+          background-color: $icon-color-inverse;
+        }
+      }
+
+      &.menu-button::after {
+        mask-image: icon("menu/v6");
+      }
+    }
+  }
+}
+
+.active {
+  ul.dropdown-menu {
+    display: flex;
+  }
+}
+
+ul.dropdown-menu {
+  display: none;
+
+  flex-direction: column;
+
+  position: absolute;
+
+  top: 0px;
+  left: 0px;
+
+  padding: 0;
+
+  transform: translateY(34px);
+
+  list-style: none;
+
+  background-color: lighten($pane-background-color, 4%);
+
+  border: 1px solid black;
+  border-radius: 2px;
+
+  font-size: 12.5px;
+
+  > li {
+    &:not(:first-child) {
+      > .dropdown-item {
+        border-top: 1.5px solid $pane-border-color;
+        &.hide {
+          border-top: none;
+        }
+      }
+    }
+
+    .dropdown-item,
+    a {
+      padding: 3px 12px;
+      display: block;
+      width: 100%;
+      height: 100%;
+
+      line-height: 18px;
+
+      &.hide {
+        display: none;
+      }
+    }
+    > span {
+      padding-bottom: 8px;
+      font-style: italic;
+    }
+    a {
+      &:hover {
+        background-color: $pane-background-color;
+      }
+
+      text-decoration: none;
+      color: black;
+
+      white-space: nowrap;
+
+      &.radio {
+        font-style: normal;
+
+        &::before {
+          content: "";
+
+          display: inline-block;
+
+          mask-size: 85% 85%;
+          mask-repeat: no-repeat;
+          mask-position: center;
+          background-color: black;
+          width: 12px;
+          height: 12px;
+          mask-image: icon("radio_button_unchecked/v7");
+        }
+        &.active::before {
+          mask-image: icon("radio_button_checked/v7");
+        }
+      }
+    }
+  }
+}

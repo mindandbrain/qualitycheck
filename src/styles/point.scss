@@ -1,0 +1,230 @@
+a.point {
+  color: black;
+  text-decoration: none;
+
+  margin: 4px 0;
+
+  border: 1px solid lighten(black, 50%);
+
+  // transform: translateY(-50%);
+
+  &.active {
+    border: 1px solid black;
+
+    ul.entries {
+      color: black;
+    }
+  }
+
+  ul.entries {
+    color: lighten(black, 40%);
+    list-style: none;
+    padding: 0;
+
+    font-size: 11.5px;
+
+    margin: 0;
+
+    li {
+      display: flex;
+
+      flex-direction: row;
+      justify-content: start;
+
+      border-bottom: 1px solid lighten(black, 80%);
+
+      &:last-child {
+        border-bottom: none;
+      }
+      span {
+        display: inline-block;
+
+        padding: 4px 4px;
+
+        line-height: 1.15;
+        flex: 1;
+
+        &.tagname {
+          font-style: italic;
+        }
+
+        &:not(:first-child) {
+          text-align: right;
+        }
+      }
+    }
+  }
+}
+
+a.point {
+  ul.entries {
+    li {
+      span {
+        background-color: lighten($pane-background-color, 0%);
+        &.value {
+          background-color: lighten($pane-background-color, 0%);
+        }
+      }
+      &.type {
+        span.value {
+          background-color: lighten(blue, 45%);
+          // text-decoration: underline;
+          font-weight: 600;
+        }
+      }
+
+      &.green {
+        span {
+          background-color: lighten(green, 65%);
+          &.value {
+            background-color: lighten(green, 70%);
+          }
+        }
+      }
+      &.red {
+        span {
+          background-color: lighten(red, 38%);
+          &.value {
+            background-color: lighten(red, 45%);
+          }
+        }
+      }
+      &.magenta {
+        span {
+          background-color: lighten(magenta, 38%);
+          &.value {
+            background-color: lighten(magenta, 45%);
+          }
+        }
+      }
+      &.cyan {
+        span {
+          background-color: $cyan;
+          &.value {
+            background-color: lighten($cyan, 3%);
+          }
+        }
+      }
+      &.yellow {
+        span {
+          background-color: $yellow;
+          &.value {
+            background-color: lighten($yellow, 3%);
+          }
+        }
+      }
+      &.blue {
+        span {
+          background-color: lighten(blue, 60%);
+          &.value {
+            background-color: lighten(blue, 40%);
+          }
+        }
+      }
+    }
+  }
+}
+
+a.point.active {
+  ul.entries {
+    li {
+      span {
+        background-color: darken($pane-background-color, 8%);
+        &.value {
+          background-color: darken($pane-background-color, 12%);
+        }
+      }
+      &.type {
+        span.value {
+          background-color: lighten(blue, 38%);
+          font-weight: 600;
+        }
+      }
+
+      &.green {
+        span {
+          background-color: lighten(green, 55%);
+          &.value {
+            background-color: lighten(green, 65%);
+          }
+        }
+      }
+      &.red {
+        span {
+          font-weight: 600;
+          background-color: lighten(red, 30%);
+          &.value {
+            background-color: lighten(red, 35%);
+          }
+        }
+      }
+      &.magenta {
+        span {
+          background-color: lighten(magenta, 32%);
+          &.value {
+            background-color: lighten(magenta, 37%);
+          }
+        }
+      }
+      &.cyan {
+        span {
+          background-color: $cyan;
+          &.value {
+            background-color: lighten($cyan, 3%);
+          }
+        }
+      }
+      &.yellow {
+        span {
+          background-color: $yellow;
+          &.value {
+            background-color: lighten($yellow, 3%);
+          }
+        }
+      }
+      &.blue {
+        span {
+          background-color: lighten(blue, 60%);
+          &.value {
+            background-color: lighten(blue, 40%);
+          }
+        }
+      }
+    }
+  }
+}
+
+.blue {
+  a.point {
+    background-color: lighten(blue, 20%) !important;
+    border-color: lighten(blue, 10%) !important;
+  }
+}
+
+.green {
+  a.point {
+    background-color: lighten(green, 25%) !important;
+    border-color: lighten(green, 10%) !important;
+  }
+}
+
+.yellow {
+  a.point {
+    background-color: $yellow !important;
+    border-color: darken($yellow, 4%) !important;
+  }
+}
+
+.red {
+  a.point {
+    background-color: lighten(red, 25%) !important;
+    border-color: lighten(red, 10%) !important;
+  }
+}
+
+.purple {
+  a.point {
+    background-color: $purple !important;
+    border-color: darken($purple, 4%) !important;
+  }
+}

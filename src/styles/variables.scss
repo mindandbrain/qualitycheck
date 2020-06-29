@@ -1,0 +1,21 @@
+$font-family-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+  "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+  "Noto Color Emoji";
+
+$pane-background-color: #eee;
+$pane-border-color: darken(#f4f4f4, 5%);
+
+$icon-color: #333;
+$icon-color-inverse: #fff;
+
+$plot-line-color: darken($pane-border-color, 25%);
+
+$green: rgba(212, 255, 185, 1);
+$red: rgba(255, 201, 216, 1);
+$magenta: rgba(255, 201, 248, 1);
+$cyan: rgba(164, 243, 246, 1);
+$yellow: rgba(245, 220, 0, 1);
+$blue: rgba(138, 167, 244, 1);
+
+$orange: rgba(246, 202, 172, 1);
+$purple: rgba(183, 91, 246, 1);

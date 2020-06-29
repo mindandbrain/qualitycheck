@@ -1,0 +1,32 @@
+@import-normalize;
+@import "./variables";
+@import "./sidebar";
+@import "./charts";
+@import "./explore";
+@import "./error";
+@import "./point";
+@import "./zoom";
+
+:root {
+}
+
+body {
+  background-color: white;
+
+  margin: 0;
+  font-family: $font-family-sans-serif;
+}
+
+qc-app {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: white;
+}
+
+div.spacer {
+  display: flex;
+  flex: 1;
+}
