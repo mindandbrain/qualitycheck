@@ -22,18 +22,7 @@ const base = {
       {
         test: /\.scss$/,
         exclude: /node_modules/,
-        use: [
-          "raw-loader",
-          "postcss-loader",
-          {
-            loader: "sass-loader",
-            options: {
-              sassOptions: {
-                includePaths: ["absolute/path/a", "absolute/path/b"],
-              },
-            },
-          },
-        ],
+        use: ["raw-loader", "postcss-loader", "sass-loader"],
       },
     ],
   },
@@ -47,10 +36,9 @@ if (process.env.NODE_ENV === "production") {
     mode: "production",
     ...base,
     plugins: [
-      new HtmlWebpackPlugin(),
+      new HtmlWebpackPlugin({ title: "qualitycheck" }),
       new InlinePlugin(),
       new CleanWebpackPlugin(),
-      // new webpack.optimize.ModuleConcatenationPlugin(),
     ],
     optimization: {
       usedExports: true,
@@ -65,7 +53,7 @@ if (process.env.NODE_ENV === "production") {
   module.exports = {
     mode: "development",
     ...base,
-    plugins: [new HtmlWebpackPlugin()],
+    plugins: [new HtmlWebpackPlugin({ title: "qualitycheck" })],
     watch: true,
     devServer: {
       publicPath: "/",

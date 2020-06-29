@@ -5,7 +5,7 @@ qc-explorer {
 
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content: flex-start;
 
   overflow: hidden;
 
@@ -14,7 +14,7 @@ qc-explorer {
 
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: flex-start;
 
     border-right: 3px solid $pane-border-color;
     // background-color: rgb(245, 251, 247);
@@ -68,7 +68,7 @@ qc-explorer {
     display: inline-flex;
     // flex-flow: column nowrap;
     flex-direction: column;
-    justify-content: start;
+    justify-content: flex-start;
 
     padding: 12px;
 

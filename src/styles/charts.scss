@@ -3,7 +3,7 @@ qc-charts {
 
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
 
   overflow: hidden;
 
@@ -18,7 +18,7 @@ qc-charts {
 
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: flex-start;
 
     &.active {
       flex-grow: 1;

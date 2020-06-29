@@ -11,30 +11,38 @@ const fname = "icon";
 
 const requireIconSvg = (iconId) => {
   return new Promise((resolve) => {
-    const retrieve = () => {
-      got(
-        `https://fonts.gstatic.com/s/i/materialicons/${iconId}/24px.svg?download=true`
-      ).then((response) => {
-        cacache.put(cachePath, iconId, response.body).then(() => {
-          resolve(response.body);
-        });
-      });
-    };
-    cacache
-      .get(cachePath, iconId)
-      .catch(retrieve)
-      .then((cacheEntry) => {
-        if (cacheEntry) {
-          resolve(cacheEntry.data);
-        } else {
-          retrieve();
-        }
-      });
+    got(`https://fonts.gstatic.com/s/i/materialicons/${iconId}/24px.svg?download=true`).then(
+      (response) => {
+        resolve(response.body);
+      }
+    );
   });
+  // return new Promise((resolve) => {
+  //   const retrieve = () => {
+  //     got(
+  //       `https://fonts.gstatic.com/s/i/materialicons/${iconId}/24px.svg?download=true`
+  //     ).then((response) => {
+  //       cacache.put(cachePath, iconId, response.body).then(() => {
+  //       resolve(response.body);
+  //       });
+  //     });
+  //   };
+  //   cacache
+  //     .get(cachePath, iconId)
+  //     .catch(retrieve)
+  //     .then((cacheEntry) => {
+  //       if (cacheEntry && cacheEntry.data) {
+  //         resolve(cacheEntry.data);
+  //       } else {
+  //   retrieve();
+  //     }
+  //   });
+  // });
 };
 
-module.exports = postcss.plugin("postcss-icons", (opts = {}) => async (css) => {
-  await css.walkDecls(async (node) => {
+module.exports = postcss.plugin("postcss-icons", (opts = {}) => (css) => {
+  const nodepromises = new Array();
+  css.walkDecls((node) => {
     if (node.value.indexOf(fname) !== -1) {
       const parsedValue = valueParser(node.value);
       const promises = new Array();
@@ -61,9 +69,13 @@ module.exports = postcss.plugin("postcss-icons", (opts = {}) => async (css) => {
           }
         }
       });
-      await Promise.all(promises).then(() => {
-        node.value = parsedValue.toString();
-      });
+      nodepromises.push(
+        Promise.all(promises).then(() => {
+          node.value = parsedValue.toString();
+          console.log(node);
+        })
+      );
     }
   });
+  return Promise.all(nodepromises);
 });
