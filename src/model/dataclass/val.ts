@@ -36,11 +36,13 @@ export class Val implements Tagged, Indexed {
 
   static *load(obj): IterableIterator<Val> {
     if (!("subject" in obj)) {
-      throw new Error("Val obj missing 'subject'");
+      return;
+      // throw new Error("Val obj missing 'subject'");
     }
     const subject = obj["subject"];
     if (!("task" in obj)) {
-      throw new Error("Val obj missing 'task'");
+      return;
+      // throw new Error("Val obj missing 'task'");
     }
     const task = obj["task"];
     for (const type of valTypes) {

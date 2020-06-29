@@ -76,6 +76,7 @@ export const relatedImgsImgTypes: { [key in string]: ImgType } = {
   confoundcorr: 3,
   reg: 5,
   rois: 5,
+  fieldmap: 5,
 } as const;
 
 export const suffixDisplayNames: { [key in Suffix]: string | null } = {

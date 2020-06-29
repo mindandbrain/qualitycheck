@@ -12,20 +12,6 @@ const base = {
     filename: "bundle.[hash].js",
     path: path.resolve(__dirname, "dist"),
   },
-  module: {
-    rules: [
-      {
-        test: /\.ts$/,
-        exclude: /node_modules/,
-        use: ["ts-loader"],
-      },
-      {
-        test: /\.scss$/,
-        exclude: /node_modules/,
-        use: ["raw-loader", "postcss-loader", "sass-loader"],
-      },
-    ],
-  },
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
   },
@@ -35,6 +21,20 @@ if (process.env.NODE_ENV === "production") {
   module.exports = {
     mode: "production",
     ...base,
+    module: {
+      rules: [
+        {
+          test: /\.ts$/,
+          exclude: /node_modules/,
+          use: ["babel-loader", "ts-loader"],
+        },
+        {
+          test: /\.scss$/,
+          exclude: /node_modules/,
+          use: ["raw-loader", "postcss-loader", "sass-loader"],
+        },
+      ],
+    },
     plugins: [
       new HtmlWebpackPlugin({ title: "qualitycheck" }),
       new InlinePlugin(),
@@ -53,6 +53,20 @@ if (process.env.NODE_ENV === "production") {
   module.exports = {
     mode: "development",
     ...base,
+    module: {
+      rules: [
+        {
+          test: /\.ts$/,
+          exclude: /node_modules/,
+          use: ["ts-loader"],
+        },
+        {
+          test: /\.scss$/,
+          exclude: /node_modules/,
+          use: ["raw-loader", "postcss-loader", "sass-loader"],
+        },
+      ],
+    },
     plugins: [new HtmlWebpackPlugin({ title: "qualitycheck" })],
     watch: true,
     devServer: {

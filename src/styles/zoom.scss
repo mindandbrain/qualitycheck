@@ -73,13 +73,11 @@ qc-zoom {
 
       > li,
       .button {
-        display: flex;
         position: relative;
         align-self: center;
         justify-content: center;
         height: 32px;
         border-radius: 3px;
-        margin: 6px 0 6px 0;
       }
 
       .buttons {
@@ -103,6 +101,7 @@ qc-zoom {
           mask-size: 80% 80%;
           width: 100%;
           height: 100%;
+          display: block;
         }
 
         &:hover,

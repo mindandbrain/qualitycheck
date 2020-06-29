@@ -103,7 +103,6 @@ qc-explorer {
       margin: 6px 0;
 
       .button {
-        display: flex;
         position: relative;
         align-self: center;
         justify-content: center;
@@ -118,6 +117,7 @@ qc-explorer {
 
         &::after {
           content: "";
+          display: block;
           mask-repeat: no-repeat;
           mask-position: center;
           background-color: $icon-color;
