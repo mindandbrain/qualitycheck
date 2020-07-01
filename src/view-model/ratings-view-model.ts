@@ -159,7 +159,7 @@ export class RatingsViewModel {
         scan = new Scan(index, img);
         this.scanArray.push(scan);
         this.scansByKeyPath[scanKeyPath] = scan;
-        this.scanIndicesByRating["none"].push(i);
+        this.scanIndicesByRating["none"].push(index);
         scan.listen((rating: Rating): void => {
           for (const r of ratings) {
             if (r === rating) {
