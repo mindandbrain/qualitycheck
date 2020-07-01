@@ -65,8 +65,7 @@ qc-explorer {
 
   .container {
     flex-grow: 1;
-    display: inline-flex;
-    // flex-flow: column nowrap;
+    display: flex;
     flex-direction: column;
     justify-content: flex-start;
 
@@ -98,8 +97,6 @@ qc-explorer {
     }
 
     qc-rating-buttons {
-      display: flex;
-
       margin: 6px 0;
 
       .button {
@@ -160,8 +157,13 @@ qc-explorer {
           margin-left: 16px;
         }
         > span {
+          display: block;
+
           font-weight: 600;
+          overflow: hidden;
           white-space: nowrap;
+          text-overflow: ellipsis;
+          text-decoration: none;
         }
         ul {
           padding-left: 0;
@@ -177,8 +179,8 @@ qc-explorer {
     }
 
     .preview {
-      display: flex;
-      flex-direction: column;
+      display: block;
+      flex: 1;
 
       position: relative;
       background-color: $pane-background-color;
@@ -188,16 +190,20 @@ qc-explorer {
       overflow: hidden;
 
       a {
-        display: inline-block;
+        display: block;
         overflow: hidden;
 
+        position: absolute;
+        width: 100%;
+        height: 100%;
+
+        text-decoration: none;
+
         span {
-          display: inline-block;
+          display: block;
           width: 100%;
           padding: 12px;
 
-          // text-align: center;
-          display: inline-block;
           text-decoration: none;
           color: black;
           font-weight: 600;
