@@ -111,17 +111,23 @@ export class Sidebar extends HTMLElement {
     //   //
     // });
     exportButton.addEventListener("click", () => {
-      const objs = viewModel.ratingsViewModel.scanArray.map((scan) => {
+      const objs = new Array();
+      for (const [hash, ratingProperty] of viewModel.model.ratingPropertiesByHash) {
+        const img = viewModel.model.imgsByHash[hash];
         const obj = {};
         for (const k of entities) {
-          if (scan[k]) {
-            obj[k] = scan[k];
+          if (k === "type" || k === "suffix") {
+            // remove computed
+            continue;
+          }
+          if (img[k]) {
+            obj[k] = img[k];
           }
         }
-        obj["rating"] = scan.rating;
-        return obj;
-      });
-
+        obj["desc"] = img.type;
+        obj["rating"] = ratingProperty.get();
+        objs.push(obj);
+      }
       const json = JSON.stringify(objs, null, 2);
       exportButton.setAttribute("href", "data:attachment/text," + encodeURI(json));
     });

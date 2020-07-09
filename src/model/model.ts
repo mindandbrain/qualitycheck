@@ -18,7 +18,7 @@ export class Model {
   imgsArray: Array<Img> = new Array<Img>();
   database: Database = new Database();
 
-  preprocStatuses: Map<string, PreprocStatus> = new Map<string, PreprocStatus>();
+  preprocStatuses: { [key: string]: Array<PreprocStatus> } = {};
   subjectWorkflowStatuses: Map<string, SubjectWorkflowStatus> = new Map<
     string,
     SubjectWorkflowStatus
@@ -76,7 +76,11 @@ export class Model {
           if ("status" in element) {
             // reportpreproc.js
             const preprocStatus = await PreprocStatus.load(element);
-            model.preprocStatuses.set(preprocStatus.keyPath, preprocStatus);
+            const subject = preprocStatus.subject;
+            if (!(subject in model.preprocStatuses)) {
+              model.preprocStatuses[subject] = new Array<PreprocStatus>();
+            }
+            model.preprocStatuses[subject].push(preprocStatus);
             dfd = reportPreprocDfd;
           } else if ("desc" in element) {
             // reportimgs.js

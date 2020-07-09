@@ -35,9 +35,17 @@ export class StatusViewModel {
         loc.sortKey = "subject";
         loc.hash = img.hash;
         const href = loc.toFragmentIdentifier();
-        const status = model.subjectWorkflowStatuses.has(subject)
+        let status = model.subjectWorkflowStatuses.has(subject)
           ? model.subjectWorkflowStatuses.get(subject).status
           : "unknown";
+        if (subject in model.preprocStatuses) {
+          const subjectPreprocStatuses = model.preprocStatuses[subject];
+          if (subjectPreprocStatuses.every((status) => status.ok)) {
+            if (status === "running") {
+              status = "success";
+            }
+          }
+        }
         const subjectObj = new StatusEntry(subject, status, href);
         this.entries.set(subject, subjectObj);
         this.entriesArray.push(subjectObj);
