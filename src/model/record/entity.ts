@@ -1,12 +1,4 @@
-export const entities = [
-  "subject",
-  "suffix",
-  "task",
-  "session",
-  "run",
-  "direction",
-  "type",
-] as const;
+export const entities = ["sub", "suffix", "task", "ses", "run", "dir", "type"] as const;
 export type Entity = typeof entities[number];
 
 export function isEntity(s: string): s is Entity {
@@ -14,21 +6,21 @@ export function isEntity(s: string): s is Entity {
 }
 
 export const entityDisplayNames: { [key in Entity]: string } = {
-  subject: "Subject",
+  sub: "Subject",
   suffix: "Suffix",
   task: "Task",
-  session: "Session",
+  ses: "Session",
   run: "Run",
-  direction: "Direction",
+  dir: "Phase encoding direction",
   type: "Image type",
 } as const;
 
 export const entityColors: { [key in Entity]: string } = {
-  subject: "red",
+  sub: "red",
   suffix: "grey",
   task: "green",
-  session: "magenta",
+  ses: "magenta",
   run: "cyan",
-  direction: "yellow",
+  dir: "yellow",
   type: "blue",
 } as const;

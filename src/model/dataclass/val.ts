@@ -5,57 +5,44 @@ import { Tagged, Indexed } from "../types";
 export class Val implements Tagged, Indexed {
   index: number;
 
-  subject: string;
+  sub: string;
   task: string;
-  session?: string;
+  ses?: string;
   run?: string;
-  direction?: string;
+  dir?: string;
 
   type: ValType;
   number: number;
 
   href: string;
 
-  protected constructor(subject: string, task: string, type: ValType, number: number) {
-    this.subject = subject;
+  protected constructor(sub: string, task: string, type: ValType, number: number) {
+    this.sub = sub;
     this.task = task;
     this.type = type;
     this.number = number;
   }
 
-  get keyPath(): string {
-    return keyPath(
-      this.subject,
-      this.task,
-      this.session || null,
-      this.run || null,
-      this.direction || null,
-      imgTypeStrs[valTypeImgTypes[this.type]]
-    );
-  }
-
   static *load(obj): IterableIterator<Val> {
-    if (!("subject" in obj)) {
+    if (!("sub" in obj)) {
       return;
-      // throw new Error("Val obj missing 'subject'");
     }
-    const subject = obj["subject"];
+    const sub = obj["sub"];
     if (!("task" in obj)) {
       return;
-      // throw new Error("Val obj missing 'task'");
     }
     const task = obj["task"];
     for (const type of valTypes) {
       if (type in obj) {
-        const val = new Val(subject, task, type, obj[type]);
-        if ("session" in obj) {
-          val.session = obj["session"];
+        const val = new Val(sub, task, type, obj[type]);
+        if ("ses" in obj) {
+          val.ses = obj["ses"];
         }
         if ("run" in obj) {
           val.run = obj["run"];
         }
-        if ("direction" in obj) {
-          val.direction = obj["direction"];
+        if ("dir" in obj) {
+          val.dir = obj["dir"];
         }
         yield val;
       }

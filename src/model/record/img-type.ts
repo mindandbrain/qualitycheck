@@ -2,7 +2,7 @@ export const imgTypes = [
   0, // skull_strip_report
   1, // t1_norm_rpt
   2, // tsnr_rpt
-  3, // carpetplot
+  3, // bold_conf
   4, // aroma
   5, // epi_norm_rpt
 ] as const;
@@ -14,8 +14,8 @@ export type Suffix = typeof suffixes[number];
 const a = "skull_strip_report";
 const b = "t1_norm_rpt";
 const c = "tsnr_rpt";
-const d = "carpetplot";
-const e = "aroma";
+const d = "bold_conf";
+const e = "ica_aroma";
 const f = "epi_norm_rpt";
 
 export const strImgTypes: { [key: string]: ImgType } = {
@@ -69,14 +69,11 @@ export const imgTypeSuffixes: { [key in ImgType]: Suffix } = {
 } as const;
 
 export const relatedImgsImgTypes: { [key in string]: ImgType } = {
-  conform: 0,
-  t1w_dseg_mask: 0,
-  std_t1w: 1,
-  compcorvar: 3,
-  confoundcorr: 3,
+  compcor: 3,
+  conf_corr: 3,
   reg: 5,
-  rois: 5,
-  fieldmap: 5,
+  bold_rois: 5,
+  sdc: 5,
 } as const;
 
 export const suffixDisplayNames: { [key in Suffix]: string | null } = {

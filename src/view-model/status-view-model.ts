@@ -1,14 +1,15 @@
-import { Model, Status, Location } from "../model";
+import { Model, Status, Location, Tagged } from "../model";
 
-export class StatusEntry {
+export class StatusEntry implements Tagged {
   index: number;
 
-  subject: string;
+  sub: string;
+
   status: Status;
   href: string;
 
-  constructor(subject: string, status: Status, href: string) {
-    this.subject = subject;
+  constructor(sub: string, status: Status, href: string) {
+    this.sub = sub;
     this.status = status;
     this.href = href;
   }
@@ -27,28 +28,28 @@ export class StatusViewModel {
   };
 
   constructor(model: Model) {
-    let subject: string | null = null;
+    let sub: string | null = null;
     for (const [i, img] of Object.entries(model.imgsArray)) {
-      if (subject !== img.subject) {
-        subject = img.subject;
+      if (sub !== img.sub) {
+        sub = img.sub;
         const loc = new Location("explore");
-        loc.sortKey = "subject";
+        loc.sortKey = "sub";
         loc.hash = img.hash;
         const href = loc.toFragmentIdentifier();
-        let status = model.subjectWorkflowStatuses.has(subject)
-          ? model.subjectWorkflowStatuses.get(subject).status
+        let status = model.subjectWorkflowStatuses.has(sub)
+          ? model.subjectWorkflowStatuses.get(sub).status
           : "unknown";
-        if (subject in model.preprocStatuses) {
-          const subjectPreprocStatuses = model.preprocStatuses[subject];
+        if (sub in model.preprocStatuses) {
+          const subjectPreprocStatuses = model.preprocStatuses[sub];
           if (subjectPreprocStatuses.every((status) => status.ok)) {
             if (status === "running") {
               status = "success";
             }
           }
         }
-        const subjectObj = new StatusEntry(subject, status, href);
-        this.entries.set(subject, subjectObj);
-        this.entriesArray.push(subjectObj);
+        const obj = new StatusEntry(sub, status, href);
+        this.entries.set(sub, obj);
+        this.entriesArray.push(obj);
       }
     }
     for (const [i, entry] of this.entriesArray.entries()) {

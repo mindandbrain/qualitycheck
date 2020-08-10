@@ -137,7 +137,7 @@ export class Charts extends HTMLElement {
       { nipype: "Nipype status" },
       {
         nipype: new MosaicPlot(
-          ["subject"],
+          ["sub"],
           viewModel.statusViewModel.entriesArray,
           viewModel.statusViewModel.entrySets,
           statusDisplayNames,
@@ -149,7 +149,7 @@ export class Charts extends HTMLElement {
     );
 
     const scanMosaicPlot = new MosaicPlot(
-      ["subject", "task", "session", "run", "direction"],
+      ["sub", "task", "ses", "run", "dir"],
       viewModel.ratingsViewModel.scanArray,
       viewModel.ratingsViewModel.scanIndicesByRating,
       ratingDisplayNames,
@@ -159,7 +159,7 @@ export class Charts extends HTMLElement {
     let imgTypeStrMosaicPlots = {};
     for (const imgTypeStr of Object.values<ImgTypeStr>(imgTypeStrs)) {
       imgTypeStrMosaicPlots[imgTypeStr] = new MosaicPlot(
-        ["subject", "task", "session", "run", "direction"],
+        ["sub", "task", "ses", "run", "dir"],
         viewModel.ratingsViewModel.imgsArraysByType[imgTypeStr],
         viewModel.ratingsViewModel.imgIndicesByTypeByRating[imgTypeStr],
         ratingDisplayNames,

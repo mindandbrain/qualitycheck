@@ -47,7 +47,7 @@ export class Location {
     const loc = new Location("charts");
     loc.topChart = "nipype";
     loc.middleChart = "exclude";
-    loc.bottomChart = "mean_fd";
+    loc.bottomChart = "fd_mean";
     return loc;
   }
 
@@ -70,8 +70,8 @@ export class Location {
       const sortKeyStr = parts.shift();
       if (sortKeyStr === "by-type") {
         loc.sortKey = "type";
-      } else if (sortKeyStr === "by-subject") {
-        loc.sortKey = "subject";
+      } else if (sortKeyStr === "by-sub") {
+        loc.sortKey = "sub";
       }
       const hash = parts.shift();
       loc.hash = hash;
@@ -165,10 +165,10 @@ export class Location {
       const sortKeyStr = parts.shift();
       if (sortKeyStr === "by-type") {
         loc.sortKey = "type";
-      } else if (sortKeyStr === "by-subject") {
-        loc.sortKey = "subject";
+      } else if (sortKeyStr === "by-sub") {
+        loc.sortKey = "sub";
       } else if (sortKeyStr === "infer") {
-        loc.sortKey = this.sortKey ? this.sortKey : "subject"; // safe default
+        loc.sortKey = this.sortKey ? this.sortKey : "sub"; // safe default
       }
       const couldBeDynamic = parts.shift();
       const couldBeDynamicArray = couldBeDynamic.split(nestedDelimiter);

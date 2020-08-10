@@ -48,10 +48,10 @@ export class BoxPlot extends HTMLElement {
       return;
     }
 
-    const factory = new PointFactory(["subject", "task", "session", "run", "direction"]);
+    const factory = new PointFactory(["sub", "task", "ses", "run", "dir"]);
     const scansByKeyPath = viewModel.ratingsViewModel.scansByKeyPath;
     for (const val of vals) {
-      const valKeyPath = keyPath(val.subject, val.task, val.session, val.run, val.direction);
+      const valKeyPath = keyPath(val.sub, val.task, val.ses, val.run, val.dir);
 
       if (valKeyPath in scansByKeyPath) {
         const point = factory.create(val);

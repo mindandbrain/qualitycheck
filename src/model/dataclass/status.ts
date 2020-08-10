@@ -1,41 +1,38 @@
 import { keyPath } from "../key-path";
 import { Status, statusIndices, reportExecStrStatuses } from "../record";
+import { Tagged } from "../types";
 
-export class PreprocStatus {
-  subject: string;
+export class PreprocStatus implements Tagged {
+  sub: string;
   task?: string;
-  session?: string;
+  ses?: string;
   run?: string;
-  direction?: string;
+  dir?: string;
 
   ok: boolean;
 
-  protected constructor(subject: string, ok: boolean) {
-    this.subject = subject;
+  protected constructor(sub: string, ok: boolean) {
+    this.sub = sub;
     this.ok = ok;
   }
 
-  get keyPath(): string {
-    return keyPath(this.subject, this.task, this.session, this.run, this.direction);
-  }
-
   static async load(obj): Promise<PreprocStatus> {
-    if (!("subject" in obj)) {
-      throw new Error("PreprocStatus obj missing 'subject'");
+    if (!("sub" in obj)) {
+      throw new Error("PreprocStatus obj missing 'sub'");
     }
-    const subject = obj["subject"];
+    const sub = obj["sub"];
 
     if (!("status" in obj)) {
       throw new Error("PreprocStatus obj missing 'status'");
     }
     const ok = obj["status"] === "done";
 
-    const preprocStatus = new PreprocStatus(subject, ok);
+    const preprocStatus = new PreprocStatus(sub, ok);
 
     preprocStatus.task = obj["task"] || null;
-    preprocStatus.session = obj["session"] || null;
+    preprocStatus.ses = obj["ses"] || null;
     preprocStatus.run = obj["run"] || null;
-    preprocStatus.direction = obj["direction"] || null;
+    preprocStatus.dir = obj["dir"] || null;
 
     return preprocStatus;
   }
@@ -72,14 +69,14 @@ export class Workflow {
   }
 }
 
-export class SubjectWorkflowStatus extends Workflow {
+export class SubjectWorkflowStatus extends Workflow implements Tagged {
   status: Status = "unknown";
 
   constructor(subject: string) {
     super(subject);
   }
 
-  get subject() {
+  get sub() {
     return this.name;
   }
 

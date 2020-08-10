@@ -10,12 +10,12 @@ export class Database {
 
   imgsArray: Array<Img>;
   indexSets: { [key in Entity]: { [key: string]: FastSet<number> } } = {
-    subject: {},
+    sub: {},
     suffix: {},
     task: {},
-    session: {},
+    ses: {},
     run: {},
-    direction: {},
+    dir: {},
     type: {},
   };
 

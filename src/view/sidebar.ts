@@ -116,7 +116,7 @@ export class Sidebar extends HTMLElement {
         const img = viewModel.model.imgsByHash[hash];
         const obj = {};
         for (const k of entities) {
-          if (k === "type" || k === "suffix") {
+          if (k === "suffix") {
             // remove computed
             continue;
           }
@@ -124,7 +124,6 @@ export class Sidebar extends HTMLElement {
             obj[k] = img[k];
           }
         }
-        obj["desc"] = img.type;
         obj["rating"] = ratingProperty.get();
         objs.push(obj);
       }

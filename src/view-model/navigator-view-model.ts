@@ -18,11 +18,11 @@ import { TreeNode } from "./tree";
 export class Item extends TreeNode<Item> implements Hrefable, Tagged, Indexed {
   entities: Array<Entity>;
 
-  subject: string;
+  sub: string;
   task?: string;
-  session?: string;
+  ses?: string;
   run?: string;
-  direction?: string;
+  dir?: string;
   type: ImgTypeStr;
 
   point: HTMLElement;
@@ -85,46 +85,46 @@ export class NavigatorViewModel {
   items: { [key in SortKey]: Array<Item> };
   leafNodesByHash: { [key in SortKey]: { [key: string]: Item } } = {
     type: {},
-    subject: {},
+    sub: {},
   };
 
   constructor(model: Model) {
     const byTypeImageTypeItems: Map<ImgTypeStr, Item> = new Map<ImgTypeStr, Item>();
     const bySubjectRoot: Item = new Item();
     for (const [i, img] of model.imgsArray.entries()) {
-      const bySubjectSubjectItem = bySubjectRoot.requireMatchingChild(img, ["subject"]);
+      const bySubjectSubjectItem = bySubjectRoot.requireMatchingChild(img, ["sub"]);
       const bySubjectScanItem = bySubjectSubjectItem.requireMatchingChild(img, [
         "suffix",
         "task",
-        "session",
+        "ses",
         "run",
-        "direction",
+        "dir",
         "type",
       ]);
-      this.leafNodesByHash["subject"][img.hash] = bySubjectScanItem;
+      this.leafNodesByHash["sub"][img.hash] = bySubjectScanItem;
     }
 
     const imgsArrayByType = [...model.imgsArray];
     const ict = PropertiesComparator<Img>([
       "typeIndex",
-      "direction",
+      "dir",
       "run",
-      "session",
+      "ses",
       "task",
       "suffix",
-      "subject",
+      "sub",
     ]);
     imgsArrayByType.sort(ict);
     const byTypeRoot: Item = new Item();
     for (const [i, img] of imgsArrayByType.entries()) {
       const byTypeImageTypeItem = byTypeRoot.requireMatchingChild(img, ["type"]);
       const byTypeScanItem = byTypeImageTypeItem.requireMatchingChild(img, [
-        "subject",
+        "sub",
         "suffix",
         "task",
-        "session",
+        "ses",
         "run",
-        "direction",
+        "dir",
       ]);
       this.leafNodesByHash["type"][img.hash] = byTypeScanItem;
     }
@@ -132,12 +132,12 @@ export class NavigatorViewModel {
     bySubjectRoot.updateSiblings();
     byTypeRoot.updateSiblings();
 
-    bySubjectRoot.updateHref("subject");
+    bySubjectRoot.updateHref("sub");
     byTypeRoot.updateHref("type");
 
     this.items = {
       type: byTypeRoot.childNodes,
-      subject: bySubjectRoot.childNodes,
+      sub: bySubjectRoot.childNodes,
     };
     // remove subject/type root as these are not to be displayed
     for (const sortKey of sortKeys) {

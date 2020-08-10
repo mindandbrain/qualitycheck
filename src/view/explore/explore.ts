@@ -89,12 +89,12 @@ export class Explore extends HTMLElement {
     );
 
     this.byTypeNavigator = new Navigator(
-      this.viewModel.navigatorViewModel.items["type"],
-      this.viewModel.navigatorViewModel.leafNodesByHash["type"]
+      this.viewModel.navigatorViewModel.items.type,
+      this.viewModel.navigatorViewModel.leafNodesByHash.type
     );
     this.bySubjectNavigator = new Navigator(
-      this.viewModel.navigatorViewModel.items["subject"],
-      this.viewModel.navigatorViewModel.leafNodesByHash["subject"]
+      this.viewModel.navigatorViewModel.items.sub,
+      this.viewModel.navigatorViewModel.leafNodesByHash.sub
     );
   }
 
@@ -107,11 +107,8 @@ export class Explore extends HTMLElement {
     this.clearChildren(this.sourceFilesContainer);
     this.clearChildren(this.relatedImgsContainer);
     for (const sourceFile of img.sourceFiles) {
-      var match = sourceFile.match(
-        /^\.\.\/nipype\/subjectlevel\/subject_[^\/]+(?:\/bold_[^\/]+)?\/(.+)$/
-      );
       this.sourceFilesContainer.appendChild(
-        h("a", [new Attribute("href", sourceFile)], [t(match[1])])
+        h("a", [new Attribute("href", sourceFile)], [t(sourceFile)])
       );
     }
     if (!img.relatedImgs) {
@@ -144,13 +141,13 @@ export class Explore extends HTMLElement {
       if (this.sortKey === null) {
         if (loc.sortKey === "type") {
           this.insertBefore(this.byTypeNavigator, this.firstChild);
-        } else if (loc.sortKey === "subject") {
+        } else if (loc.sortKey === "sub") {
           this.insertBefore(this.bySubjectNavigator, this.firstChild);
         }
       } else {
         if (loc.sortKey === "type") {
           this.replaceChild(this.byTypeNavigator, this.bySubjectNavigator);
-        } else if (loc.sortKey === "subject") {
+        } else if (loc.sortKey === "sub") {
           this.replaceChild(this.bySubjectNavigator, this.byTypeNavigator);
         } else {
           this.removeChild(this.firstChild);
@@ -160,7 +157,7 @@ export class Explore extends HTMLElement {
     }
     if (this.sortKey === "type") {
       this.byTypeNavigator.onLocationChange(loc);
-    } else if (this.sortKey === "subject") {
+    } else if (this.sortKey === "sub") {
       this.bySubjectNavigator.onLocationChange(loc);
     }
   }

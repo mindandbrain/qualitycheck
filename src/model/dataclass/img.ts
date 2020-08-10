@@ -9,16 +9,16 @@ import {
   imgTypeStrs,
 } from "../record";
 import { keyPath } from "../key-path";
-import { Indexed } from "../types";
+import { Indexed, Tagged } from "../types";
 
-export class Img implements Indexed {
+export class Img implements Indexed, Tagged {
   index: number;
 
-  subject: string;
+  sub: string;
   task?: string;
-  session?: string;
+  ses?: string;
   run?: string;
-  direction?: string;
+  dir?: string;
   type: ImgTypeStr;
   typeIndex: ImgType;
 
@@ -31,13 +31,13 @@ export class Img implements Indexed {
   href: string;
 
   protected constructor(
-    subject: string,
+    sub: string,
     type: ImgTypeStr,
     path: string,
     hash: string,
     sourceFiles: string[]
   ) {
-    this.subject = subject;
+    this.sub = sub;
     this.type = type;
     this.typeIndex = strImgTypes[type];
     this.suffix = imgTypeSuffixes[this.typeIndex];
@@ -46,20 +46,13 @@ export class Img implements Indexed {
     this.sourceFiles = sourceFiles;
 
     const loc = new Location("explore");
-    loc.sortKey = "subject";
+    loc.sortKey = "sub";
     loc.hash = hash;
     this.href = loc.toFragmentIdentifier();
   }
 
   get keyPath(): string {
-    return keyPath(
-      this.subject,
-      this.task,
-      this.session,
-      this.run,
-      this.direction,
-      this.type
-    );
+    return keyPath(this.sub, this.task, this.ses, this.run, this.dir, this.type);
   }
 
   static relatedImgsMap: Map<string, Array<string>> = new Map();
@@ -67,29 +60,33 @@ export class Img implements Indexed {
     return Img.relatedImgsMap.get(this.keyPath);
   }
 
-  static async load(obj): Promise<Img | null> {
-    if (!("subject" in obj)) {
-      throw new Error("Val obj missing 'subject'");
+  static async load(obj: Tagged): Promise<Img | null> {
+    if (!("sub" in obj)) {
+      console.warn("Val obj missing 'sub':", obj);
+      return null;
     }
-    const subject = obj["subject"];
+    const sub = obj["sub"];
     const task = obj["task"] || null;
-    const session = obj["session"] || null;
+    const ses = obj["ses"] || null;
     const run = obj["run"] || null;
-    const direction = obj["direction"] || null;
+    const dir = obj["dir"] || null;
     if (!("desc" in obj)) {
-      throw new Error("Img obj missing 'desc'");
+      console.warn("Img obj missing 'desc':", obj);
+      return null;
     }
     const desc = obj["desc"];
     if (!("path" in obj)) {
-      throw new Error("Img obj missing 'path'");
+      console.warn("Img obj missing 'path':", obj);
+      return null;
     }
     const path = obj["path"];
     if (!(desc in strImgTypes)) {
       if (!(desc in relatedImgsImgTypes)) {
-        throw new Error(`Img obj has unknown 'desc' value '${desc}'`);
+        console.warn(`Img obj has unknown 'desc' value '${desc}':`, obj);
+        return null;
       }
       const type = relatedImgsImgTypes[desc];
-      const keyp = keyPath(subject, task, session, run, direction, imgTypeStrs[type]);
+      const keyp = keyPath(sub, task, ses, run, dir, imgTypeStrs[type]);
       if (!this.relatedImgsMap.has(keyp)) {
         this.relatedImgsMap.set(keyp, new Array<string>());
       }
@@ -98,15 +95,16 @@ export class Img implements Indexed {
     }
     const type = desc;
     if (!("hash" in obj)) {
-      throw new Error("Img obj missing 'hash'");
+      console.warn("Img obj missing 'hash':", obj);
+      return null;
     }
     const hash = obj["hash"];
     const sourceFiles = obj["sourcefiles"] || [];
-    const img = new Img(subject, type, path, hash, sourceFiles);
+    const img = new Img(sub, type, path, hash, sourceFiles);
     img.task = task;
-    img.session = session;
+    img.ses = ses;
     img.run = run;
-    img.direction = direction;
+    img.dir = dir;
     return img;
   }
 }

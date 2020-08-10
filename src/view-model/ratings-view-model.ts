@@ -30,18 +30,18 @@ export class Scan implements Tagged {
   img: Img;
   href: string;
 
-  subject: string;
+  sub: string;
   task?: string;
-  session?: string;
+  ses?: string;
   run?: string;
-  direction?: string;
+  dir?: string;
 
   private ratings: { [key in ImgTypeStr]: Rating } = {
     skull_strip_report: "none",
     t1_norm_rpt: "none",
     tsnr_rpt: "none",
-    carpetplot: "none",
-    aroma: "none",
+    bold_conf: "none",
+    ica_aroma: "none",
     epi_norm_rpt: "none",
   };
 
@@ -51,11 +51,11 @@ export class Scan implements Tagged {
     this.index = index;
     this.img = img;
 
-    this.subject = img.subject;
+    this.sub = img.sub;
     this.task = img.task;
-    this.session = img.session;
+    this.ses = img.ses;
     this.run = img.run;
-    this.direction = img.direction;
+    this.dir = img.dir;
 
     this.href = Location.makeDynamicHref(this, "explore");
   }
@@ -100,16 +100,16 @@ export class RatingsViewModel {
     skull_strip_report: new Array<Img>(),
     t1_norm_rpt: new Array<Img>(),
     tsnr_rpt: new Array<Img>(),
-    carpetplot: new Array<Img>(),
-    aroma: new Array<Img>(),
+    bold_conf: new Array<Img>(),
+    ica_aroma: new Array<Img>(),
     epi_norm_rpt: new Array<Img>(),
   };
   imgIndicesByTypeByRating: { [key in ImgTypeStr]: IndexSets } = {
     skull_strip_report: new IndexSetsImpl(),
     t1_norm_rpt: new IndexSetsImpl(),
     tsnr_rpt: new IndexSetsImpl(),
-    carpetplot: new IndexSetsImpl(),
-    aroma: new IndexSetsImpl(),
+    bold_conf: new IndexSetsImpl(),
+    ica_aroma: new IndexSetsImpl(),
     epi_norm_rpt: new IndexSetsImpl(),
   };
 
@@ -118,7 +118,7 @@ export class RatingsViewModel {
   constructor(model: Model) {
     this.model = model;
 
-    let subject: string = "";
+    let sub: string = "";
     let anatImgs: Array<Img>;
 
     let scanKeyPath: string = "";
@@ -143,15 +143,15 @@ export class RatingsViewModel {
         }
       });
       // aggregated
-      if (subject !== img.subject) {
-        subject = img.subject;
+      if (sub !== img.sub) {
+        sub = img.sub;
         anatImgs = new Array<Img>();
       }
       if (img.suffix === "anat") {
         anatImgs.push(img);
         continue;
       }
-      const imgKeyPath = keyPath(img.subject, img.task, img.session, img.run, img.direction);
+      const imgKeyPath = keyPath(img.sub, img.task, img.ses, img.run, img.dir);
       if (scanKeyPath !== imgKeyPath) {
         // start new scan
         scanKeyPath = imgKeyPath;

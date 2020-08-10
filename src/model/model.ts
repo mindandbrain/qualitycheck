@@ -8,8 +8,8 @@ import { Database } from "./database";
 
 export class Model {
   vals: { [key in ValType]: Array<Val> } = {
-    mean_fd: new Array<Val>(),
-    fd_gt_0_5: new Array<Val>(),
+    fd_mean: new Array<Val>(),
+    fd_perc: new Array<Val>(),
     aroma_noise_frac: new Array<Val>(),
     mean_gm_tsnr: new Array<Val>(),
   };
@@ -39,12 +39,12 @@ export class Model {
       }
     }
     const ic: Comparator<Img> = PropertiesComparator<Img>([
-      "subject",
+      "sub",
       "suffix",
       "task",
-      "session",
+      "ses",
       "run",
-      "direction",
+      "dir",
       "typeIndex",
     ]);
     this.imgsArray.sort(ic);
@@ -76,13 +76,13 @@ export class Model {
           if ("status" in element) {
             // reportpreproc.js
             const preprocStatus = await PreprocStatus.load(element);
-            const subject = preprocStatus.subject;
-            if (!(subject in model.preprocStatuses)) {
-              model.preprocStatuses[subject] = new Array<PreprocStatus>();
+            const sub = preprocStatus.sub;
+            if (!(sub in model.preprocStatuses)) {
+              model.preprocStatuses[sub] = new Array<PreprocStatus>();
             }
-            model.preprocStatuses[subject].push(preprocStatus);
+            model.preprocStatuses[sub].push(preprocStatus);
             dfd = reportPreprocDfd;
-          } else if ("desc" in element) {
+          } else if ("path" in element) {
             // reportimgs.js
             const img = await Img.load(element);
             if (img !== null) {
