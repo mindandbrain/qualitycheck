@@ -62,15 +62,19 @@ export class Model {
 
   static async load(): Promise<Model> {
     const model = new Model();
-
-    const reportExecDfd: Deferred = new Deferred();
-    const reportImgsDfd: Deferred = new Deferred();
-    const reportPreprocDfd: Deferred = new Deferred();
-    const reportValsDfd: Deferred = new Deferred();
+    
+    const reportDfds: Array<Deferred> = new Array<Deferred>();
+    for (let i = 0; i < 4; i++) {
+      reportDfds.push(new Deferred());
+    }
 
     window["report"] = async (str) => {
-      const obj = JSON.parse(str);
-      let dfd: Deferred | null = null;
+      let obj = [];
+      try {
+        obj = JSON.parse(str);
+      } catch (e) {
+        // TODO display warning
+      }
       if (obj instanceof Array) {
         for (const element of obj) {
           if ("status" in element) {
@@ -81,30 +85,24 @@ export class Model {
               model.preprocStatuses[sub] = new Array<PreprocStatus>();
             }
             model.preprocStatuses[sub].push(preprocStatus);
-            dfd = reportPreprocDfd;
           } else if ("path" in element) {
             // reportimgs.js
             const img = await Img.load(element);
             if (img !== null) {
               model.addImg(img);
             }
-            dfd = reportImgsDfd;
           } else {
             // reportvals.js
             for (const val of Val.load(element)) {
               model.vals[val.type].push(val);
             }
-            dfd = reportValsDfd;
           }
         }
       } else {
         // reportexec.js
         model.subjectWorkflowStatuses = await SubjectWorkflowStatus.load(obj);
-        reportExecDfd.resolve();
       }
-      if (dfd !== null) {
-        dfd.resolve();
-      }
+      reportDfds.pop().resolve();
     };
 
     const loadScript = async (src): Promise<void> => {
@@ -121,15 +119,14 @@ export class Model {
       });
     };
 
+    const reportPromises: Array<Promise<any>> = reportDfds.map(d => d.promise);
+
     await Promise.all([
       loadScript("reportexec.js"),
       loadScript("reportimgs.js"),
       loadScript("reportpreproc.js"),
       loadScript("reportvals.js"),
-      reportExecDfd.promise,
-      reportImgsDfd.promise,
-      reportPreprocDfd.promise,
-      reportValsDfd.promise,
+      ...reportPromises,
     ]);
     await model.sort();
     return model;
