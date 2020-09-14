@@ -42,7 +42,7 @@ export class StatusViewModel {
         if (sub in model.preprocStatuses) {
           const subjectPreprocStatuses = model.preprocStatuses[sub];
           if (subjectPreprocStatuses.every((status) => status.ok)) {
-            if (status === "running") {
+            if (status !== "error") {
               status = "success";
             }
           }
