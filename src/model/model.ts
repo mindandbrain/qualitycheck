@@ -79,12 +79,17 @@ export class Model {
         for (const element of obj) {
           if ("status" in element) {
             // reportpreproc.js
-            const preprocStatus = await PreprocStatus.load(element);
-            const sub = preprocStatus.sub;
-            if (!(sub in model.preprocStatuses)) {
-              model.preprocStatuses[sub] = new Array<PreprocStatus>();
+            try {
+              const preprocStatus = await PreprocStatus.load(element);
+            
+              const sub = preprocStatus.sub;
+              if (!(sub in model.preprocStatuses)) {
+                model.preprocStatuses[sub] = new Array<PreprocStatus>();
+              }
+              model.preprocStatuses[sub].push(preprocStatus);
+            } catch (e) {
+              // TODO display warning
             }
-            model.preprocStatuses[sub].push(preprocStatus);
           } else if ("path" in element) {
             // reportimgs.js
             const img = await Img.load(element);
