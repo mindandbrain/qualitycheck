@@ -43,7 +43,7 @@ if (process.env.NODE_ENV === "production") {
     optimization: {
       usedExports: true,
       splitChunks: {
-        name: true,
+        name: false,
       },
 
       concatenateModules: true,
