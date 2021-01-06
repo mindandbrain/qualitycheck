@@ -35,7 +35,10 @@ if (process.env.NODE_ENV === "production") {
       ],
     },
     plugins: [
-      new HtmlWebpackPlugin({ title: "qualitycheck" }),
+      new HtmlWebpackPlugin({
+        title: "qualitycheck",
+        inject: "body",
+      }),
       new InlinePlugin(),
       new CleanWebpackPlugin(),
     ],

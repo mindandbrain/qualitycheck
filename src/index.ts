@@ -1,6 +1,8 @@
-import { Model } from "./model";
-import { ViewModel } from "./view-model";
-import { App, Attribute, h, t } from "./view";
+import { Model } from "./model/model";
+import { ViewModel } from "./view-model/view-model";
+
+import { App } from "./view/app";
+import { Attribute, h, t } from "./view/render";
 
 import css from "./styles/index.scss";
 
