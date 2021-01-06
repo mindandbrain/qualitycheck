@@ -8,8 +8,7 @@
   "main": "",
   "scripts": {
     "serve": "env NODE_ENV=development webpack-dev-server",
-    "build": "env NODE_ENV=production webpack",
-    "test": "env NODE_ENV=production webpack"
+    "build": "env NODE_ENV=production webpack"
   },
   "author": "Lea Waller",
   "browserslist": [
