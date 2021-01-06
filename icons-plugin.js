@@ -1,7 +1,5 @@
 const got = require("got");
-const cacache = require("cacache");
 
-const postcss = require("postcss");
 const valueParser = require("postcss-value-parser");
 const { transform, encode } = require("postcss-inline-svg/lib/defaults");
 
@@ -17,32 +15,14 @@ const requireIconSvg = (iconId) => {
       }
     );
   });
-  // return new Promise((resolve) => {
-  //   const retrieve = () => {
-  //     got(
-  //       `https://fonts.gstatic.com/s/i/materialicons/${iconId}/24px.svg?download=true`
-  //     ).then((response) => {
-  //       cacache.put(cachePath, iconId, response.body).then(() => {
-  //       resolve(response.body);
-  //       });
-  //     });
-  //   };
-  //   cacache
-  //     .get(cachePath, iconId)
-  //     .catch(retrieve)
-  //     .then((cacheEntry) => {
-  //       if (cacheEntry && cacheEntry.data) {
-  //         resolve(cacheEntry.data);
-  //       } else {
-  //   retrieve();
-  //     }
-  //   });
-  // });
 };
 
-module.exports = postcss.plugin("postcss-icons", (opts = {}) => (css) => {
+module.exports = (opts = {}) => (css) => {
+
   const nodepromises = new Array();
+
   css.walkDecls((node) => {
+
     if (node.value.indexOf(fname) !== -1) {
       const parsedValue = valueParser(node.value);
       const promises = new Array();
@@ -69,13 +49,17 @@ module.exports = postcss.plugin("postcss-icons", (opts = {}) => (css) => {
           }
         }
       });
+
       nodepromises.push(
         Promise.all(promises).then(() => {
           node.value = parsedValue.toString();
-          // console.log(node);
         })
       );
     }
+
   });
+
   return Promise.all(nodepromises);
-});
+};
+
+module.exports.postcss = true;
