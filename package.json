@@ -2,8 +2,8 @@
   "name": "qualitycheck",
   "fullName": "mindandbrain/qualitycheck",
   "repository": "mindandbrain/qualitycheck",
-  "license": "",
-  "version": "0.0.0",
+  "license": "GPL-3.0",
+  "version": "0.3.0",
   "description": "",
   "main": "",
   "scripts": {
