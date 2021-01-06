@@ -27,7 +27,12 @@ qc-explorer {
 
       height: 100vh;
       overflow-y: scroll;
+
       scrollbar-width: none;
+      &::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+      }
 
       &.left {
         a.point {
