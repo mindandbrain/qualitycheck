@@ -1,5 +1,4 @@
 const path = require("path");
-const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
@@ -9,7 +8,7 @@ const base = {
   entry: "./src/index.ts",
   devtool: "source-map",
   output: {
-    filename: "bundle.[hash].js",
+    filename: "bundle.[contenthash].js",
     path: path.resolve(__dirname, "dist"),
   },
   resolve: {

@@ -1,19 +1,11 @@
 import SortedSet from "collections/sorted-set";
 import { format } from "d3-format";
 
-import {
-  Entity,
-  entityDisplayNames,
-  entityColors,
-  Collection,
-  Indexed,
-  Tagged,
-  Hrefable,
-} from "../../model";
+import { Entity } from "../../model/record/entity";
+import { Collection, Indexed, Hrefable, Tagged } from "../../model/types";
 
 import { Attribute, h, t } from "../render";
 import { PointFactory } from "../point";
-import { percent, px } from "../utils";
 
 import pluralize from "pluralize";
 

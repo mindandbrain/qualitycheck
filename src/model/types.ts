@@ -1,6 +1,6 @@
 import SortedSet from "collections/sorted-set";
 
-import { Entity } from "./record";
+import { Entity } from "./record/entity";
 
 export type Collection<T> = SortedSet<T> | Array<T>;
 

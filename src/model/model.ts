@@ -1,9 +1,15 @@
 import { Comparator, PropertyComparator, PropertiesComparator } from "./comparator";
 import { Deferred } from "./utils";
 
-import { Val, Img, SubjectWorkflowStatus, PreprocStatus, Location } from "./dataclass";
-import { ValType, ImgType, Rating, Entity, entities } from "./record";
-import { RatingProperty, LocationProperty } from "./property";
+import { Val } from "./dataclass/val";
+import { Img } from "./dataclass/img";
+import { SubjectWorkflowStatus, PreprocStatus } from "./dataclass/status";
+
+import { ValType } from "./record/val-type";
+
+import { LocationProperty } from "./property/location-property";
+import { RatingProperty } from "./property/rating-property";
+
 import { Database } from "./database";
 
 export class Model {
@@ -68,7 +74,7 @@ export class Model {
       reportDfds.push(new Deferred());
     }
 
-    window["report"] = async (str) => {
+    window["report"] = async (str: string) => {
       let obj = [];
       try {
         obj = JSON.parse(str);
@@ -77,8 +83,7 @@ export class Model {
       }
       if (obj instanceof Array) {
         for (const element of obj) {
-          if ("status" in element) {
-            // reportpreproc.js
+          if ("status" in element) {  // reportpreproc.js
             try {
               const preprocStatus = await PreprocStatus.load(element);
             
@@ -90,27 +95,24 @@ export class Model {
             } catch (e) {
               // TODO display warning
             }
-          } else if ("path" in element) {
-            // reportimgs.js
+          } else if ("path" in element) {  // reportimgs.js
             const img = await Img.load(element);
             if (img !== null) {
               model.addImg(img);
             }
-          } else {
-            // reportvals.js
+          } else {  // reportvals.js
             for (const val of Val.load(element)) {
               model.vals[val.type].push(val);
             }
           }
         }
-      } else {
-        // reportexec.js
+      } else {  // reportexec.js
         model.subjectWorkflowStatuses = await SubjectWorkflowStatus.load(obj);
       }
       reportDfds.pop().resolve();
     };
 
-    const loadScript = async (src): Promise<void> => {
+    const loadScript = async (src: string): Promise<void> => {
       await new Promise((resolve, reject) => {
         var scriptElement: HTMLScriptElement = document.createElement("script");
         scriptElement.src = src;

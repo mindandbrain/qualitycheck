@@ -1,5 +1,4 @@
-import { keyPath } from "../key-path";
-import { Status, statusIndices, reportExecStrStatuses } from "../record";
+import { Status, statusIndices, reportExecStrStatuses } from "../record/status";
 import { Tagged } from "../types";
 
 export class PreprocStatus implements Tagged {
@@ -16,7 +15,7 @@ export class PreprocStatus implements Tagged {
     this.ok = ok;
   }
 
-  static async load(obj): Promise<PreprocStatus> {
+  static async load(obj: any): Promise<PreprocStatus> {
     if (!("sub" in obj)) {
       throw new Error("PreprocStatus obj missing 'sub'");
     }
@@ -70,7 +69,7 @@ export class Workflow {
 }
 
 export class SubjectWorkflowStatus extends Workflow implements Tagged {
-  status: Status = "unknown";
+  status: Status = "pending";
 
   constructor(subject: string) {
     super(subject);
@@ -80,17 +79,23 @@ export class SubjectWorkflowStatus extends Workflow implements Tagged {
     return this.name;
   }
 
-  static async load(obj): Promise<Map<string, SubjectWorkflowStatus>> {
+  static async load(obj: any): Promise<Map<string, SubjectWorkflowStatus>> {
     const subjectWorkflowStatusMap: Map<string, SubjectWorkflowStatus> = new Map();
     for (const [fullname, reportStatus] of Object.entries(obj)) {
+
       if (typeof fullname !== "string") {
         throw new Error(`SubjectWorkflowStatus obj entry has invalid fullname '${fullname}'`);
       }
-      if (typeof reportStatus !== "string" || !(reportStatus in reportExecStrStatuses)) {
+
+      let status: Status = "pending";
+      if (typeof reportStatus !== "string") {
         throw new Error(
           `SubjectWorkflowStatus obj entry has invalid status '${reportStatus}'`
         );
+      } else if (reportStatus in reportExecStrStatuses) {
+        status = reportExecStrStatuses[reportStatus];
       }
+
       const parts: string[] = fullname.split(".");
       let part = parts.shift();
       if (part !== "nipype") {
@@ -135,10 +140,11 @@ export class SubjectWorkflowStatus extends Workflow implements Tagged {
       if (workflow.has(nodename)) {
         throw new Error(`SubjectWorkflowStatus obj entry '${fullname}' is a duplicate`);
       }
-      const status = reportExecStrStatuses[reportStatus];
+      
       if (statusIndices[status] > statusIndices[subjectWorkflowStatus.status]) {
         subjectWorkflowStatus.status = status;
       }
+
       const node = new Node(nodename, status);
       workflow.set(nodename, node);
     }

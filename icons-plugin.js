@@ -3,8 +3,6 @@ const got = require("got");
 const valueParser = require("postcss-value-parser");
 const { transform, encode } = require("postcss-inline-svg/lib/defaults");
 
-const cachePath = ".icons";
-
 const fname = "icon";
 
 const requireIconSvg = (iconId) => {
