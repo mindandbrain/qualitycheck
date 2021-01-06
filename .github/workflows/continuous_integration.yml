@@ -10,17 +10,16 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     
     timeout-minutes: 30
 
     steps:
 
-      - uses: actions/checkout@v2
-
-      - uses: actions/setup-node@v1
-        with: 
-          node-version: "15.x"
-
       - run: npm ci
       - run: npm run build
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: index.html
+          path: dist/index.html

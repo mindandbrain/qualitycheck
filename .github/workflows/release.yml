@@ -1,0 +1,40 @@
+on:
+  push:
+    tags:
+      - "*.*.*"  # Any tag that looks like a version
+
+name: release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 30
+      
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+        with: 
+          node-version: "15.x"
+
+      - run: npm ci
+      - run: npm run build
+
+      - uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: true
+
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: dist/index.html
+          asset_name: index.html
+          asset_content_type: text/html
