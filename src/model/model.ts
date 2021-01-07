@@ -26,7 +26,7 @@ export class Model {
   database: Database = new Database();
 
   preprocStatuses: { [key: string]: Array<PreprocStatus> } = {};
-  nodeErrors: Array<NodeError> = new Array<NodeError>();
+  nodeErrors: { [key: string]: Array<NodeError> } = {};
 
   locationProperty: LocationProperty = new LocationProperty();
 
@@ -101,7 +101,13 @@ export class Model {
               }
 
             } else if ("node" in element) {  // reporterror.js
-               const nodeError = await NodeError.load(element); 
+              const nodeError = await NodeError.load(element);
+              const sub = nodeError.sub;
+              
+              if (!(sub in model.preprocStatuses)) {
+                model.nodeErrors[sub] = new Array<NodeError>();
+              }
+              model.nodeErrors[sub].push(nodeError);
 
             } else {  // reportvals.js
               for (const val of Val.load(element)) {

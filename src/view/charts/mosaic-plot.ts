@@ -1,13 +1,13 @@
 import SortedSet from "collections/sorted-set";
 import { format } from "d3-format";
 
+import { pluralize } from "inflected";
+
 import { Entity } from "../../model/record/entity";
 import { Collection, Indexed, Hrefable, Tagged } from "../../model/types";
 
 import { Attribute, h, t } from "../render";
 import { PointFactory } from "../point";
-
-import pluralize from "pluralize";
 
 export class MosaicPlot<
   T extends Indexed & Hrefable & Tagged,
@@ -72,8 +72,12 @@ export class MosaicPlot<
       const layout = (length: number): void => {
         const proportion = length / this.objs.length;
         const percentStr = f(proportion);
-        // block.style.flexGrow = proportion.toString();
-        const inflected = pluralize(noun, length);
+        
+        let inflected = noun;
+        if (length > 1) {
+          inflected = pluralize(noun);
+        }
+
         if (percentStr !== "0%") {
           infoElement.textContent = `${length} ${inflected} (${percentStr})`;
         } else {

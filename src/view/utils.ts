@@ -1,4 +1,4 @@
-export const range = (len) => [...Array(len).keys()];
+export const range = (len: number) => [...Array(len).keys()];
 
 export const percent = (x: number) => `${x}%`;
 export const px = (x: number) => `${x}px`;
