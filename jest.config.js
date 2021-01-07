@@ -3,6 +3,10 @@ module.exports = {
     "src/"
   ],
   collectCoverage: true,
+  collectCoverageFrom: [
+    "src/**/*.{ts,tsx}",
+    "!src/types/**",
+  ],
   coverageDirectory: "coverage",
   testMatch: [
     "**/__tests__/**/*.+(ts|tsx|js)",
