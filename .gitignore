@@ -6,6 +6,8 @@ node_modules
 .tscc_temp
 .icons
 
+coverage
+
 # local env files
 .env.local
 .env.*.local

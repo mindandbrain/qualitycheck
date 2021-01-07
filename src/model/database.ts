@@ -1,8 +1,8 @@
 import FastSet from "collections/fast-set";
 
-import { Val, Img, SubjectWorkflowStatus, PreprocStatus, Location } from "./dataclass";
-import { Entity, entities } from "./record";
-import { RatingProperty, LocationProperty } from "./property";
+import { Img } from "./dataclass/img";
+
+import { Entity, entities } from "./record/entity";
 import { Tagged } from "./types";
 
 export class Database {

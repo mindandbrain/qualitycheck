@@ -3,6 +3,8 @@ import { Tagged } from "../model/types";
 import { Status } from "../model/record/status";
 import { Location } from "../model/dataclass/location";
 
+import { cleaner } from "./utils";
+
 export class StatusEntry implements Tagged {
   index: number;
 
@@ -41,8 +43,10 @@ export class StatusViewModel {
         const href = loc.toFragmentIdentifier();
 
         let status: Status = "pending";
-        if (model.subjectWorkflowStatuses.has(sub)) {
-          status = model.subjectWorkflowStatuses.get(sub).status;
+
+        const bidsSub = cleaner(sub);
+        if (bidsSub in model.nodeErrors) {
+          status = "error";
         }
 
         if (sub in model.preprocStatuses) {
