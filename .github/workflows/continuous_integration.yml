@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     
     timeout-minutes: 30
@@ -22,9 +22,19 @@ jobs:
           node-version: "15.x"
 
       - run: npm ci
+
       - run: npm run build
 
       - uses: actions/upload-artifact@v2
         with:
           name: index.html
           path: dist/index.html
+
+      - run: npm test
+     
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage/clover.xml
+          fail_ci_if_error: true 

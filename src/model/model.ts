@@ -3,7 +3,8 @@ import { Deferred } from "./utils";
 
 import { Val } from "./dataclass/val";
 import { Img } from "./dataclass/img";
-import { SubjectWorkflowStatus, PreprocStatus } from "./dataclass/status";
+import { PreprocStatus } from "./dataclass/preproc";
+import { NodeError } from "./dataclass/error";
 
 import { ValType } from "./record/val-type";
 
@@ -25,10 +26,7 @@ export class Model {
   database: Database = new Database();
 
   preprocStatuses: { [key: string]: Array<PreprocStatus> } = {};
-  subjectWorkflowStatuses: Map<string, SubjectWorkflowStatus> = new Map<
-    string,
-    SubjectWorkflowStatus
-  >();
+  nodeErrors: Array<NodeError> = new Array<NodeError>();
 
   locationProperty: LocationProperty = new LocationProperty();
 
@@ -75,40 +73,47 @@ export class Model {
     }
 
     window["report"] = async (str: string) => {
-      let obj = [];
+
+      let obj = null;
       try {
         obj = JSON.parse(str);
       } catch (e) {
         // TODO display warning
       }
+
       if (obj instanceof Array) {
         for (const element of obj) {
-          if ("status" in element) {  // reportpreproc.js
-            try {
-              const preprocStatus = await PreprocStatus.load(element);
-            
-              const sub = preprocStatus.sub;
-              if (!(sub in model.preprocStatuses)) {
-                model.preprocStatuses[sub] = new Array<PreprocStatus>();
+
+          try {
+            if ("status" in element) {  // reportpreproc.js
+                const preprocStatus = await PreprocStatus.load(element);
+                const sub = preprocStatus.sub;
+
+                if (!(sub in model.preprocStatuses)) {
+                  model.preprocStatuses[sub] = new Array<PreprocStatus>();
+                }
+                model.preprocStatuses[sub].push(preprocStatus);
+
+            } else if ("path" in element) {  // reportimgs.js
+              const img = await Img.load(element);
+              if (img !== null) {
+                model.addImg(img);
               }
-              model.preprocStatuses[sub].push(preprocStatus);
-            } catch (e) {
-              // TODO display warning
+
+            } else if ("node" in element) {  // reporterror.js
+               const nodeError = await NodeError.load(element); 
+
+            } else {  // reportvals.js
+              for (const val of Val.load(element)) {
+                model.vals[val.type].push(val);
+              }
             }
-          } else if ("path" in element) {  // reportimgs.js
-            const img = await Img.load(element);
-            if (img !== null) {
-              model.addImg(img);
-            }
-          } else {  // reportvals.js
-            for (const val of Val.load(element)) {
-              model.vals[val.type].push(val);
-            }
+          } catch (e) {
+            // TODO display warning
           }
         }
-      } else {  // reportexec.js
-        model.subjectWorkflowStatuses = await SubjectWorkflowStatus.load(obj);
       }
+
       reportDfds.pop().resolve();
     };
 
@@ -129,7 +134,7 @@ export class Model {
     const reportPromises: Array<Promise<any>> = reportDfds.map(d => d.promise);
 
     await Promise.all([
-      loadScript("reportexec.js"),
+      loadScript("reporterror.js"),
       loadScript("reportimgs.js"),
       loadScript("reportpreproc.js"),
       loadScript("reportvals.js"),

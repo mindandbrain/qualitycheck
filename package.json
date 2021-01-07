@@ -8,7 +8,8 @@
   "main": "",
   "scripts": {
     "serve": "env NODE_ENV=development webpack-dev-server",
-    "build": "env NODE_ENV=production webpack"
+    "build": "env NODE_ENV=production webpack",
+    "test": "jest"
   },
   "author": "Lea Waller",
   "browserslist": [
@@ -58,6 +59,8 @@
     "webpack-dev-server": "^3.11.0"
   },
   "devDependencies": {
-    "prettier": "^2.2.1"
+    "@types/jest": "^26.0.20",
+    "prettier": "^2.2.1",
+    "ts-jest": "^26.4.4"
   }
 }
